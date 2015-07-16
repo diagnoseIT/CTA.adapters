@@ -1,0 +1,35 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.7
+version = '0.1'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'diagnoseIT spike',
+                   'Implementation-Version': version
+    }
+}
+
+repositories {
+    mavenCentral()
+	maven {
+		name 'jboss'
+		url 'http://repository.jboss.org/nexus/content/groups/public-jboss'
+	}
+}
+
+dependencies {
+    compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+	compile group: 'org.drools', name: 'drools-compiler', version: '6.2.0.Final'
+	compile group: 'org.drools', name: 'drools-core', version: '6.2.0.Final'
+	compile group: 'org.kie', name: 'kie-api', version: '6.2.0.Final'
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'repos'
+       }
+    }
+}
