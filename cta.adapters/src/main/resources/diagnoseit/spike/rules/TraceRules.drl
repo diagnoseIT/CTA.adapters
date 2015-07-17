@@ -1,0 +1,17 @@
+package org.diagnoseit.spike.rules;
+
+import org.diagnoseit.spike.trace.Callable;
+import org.diagnoseit.spike.trace.Location;
+import org.diagnoseit.spike.trace.OperationInvocation;
+import org.diagnoseit.spike.trace.SubTrace;
+import org.diagnoseit.spike.trace.Trace;
+import org.diagnoseit.spike.trace.TraceInvocation;
+
+global long RESPONSE_TIME_BASELINE;
+
+rule "Baseline"
+	when
+		eval(Trace.getRootTrace().getRoot().getExecutionTime() > RESPONSE_TIME_BASELINE)
+		trace : Trace
+	then
+end
