@@ -1,6 +1,7 @@
 package org.diagnoseit.spike.trace.impl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.NavigableSet;
 import java.util.TreeSet;
@@ -10,7 +11,7 @@ import org.diagnoseit.spike.trace.Location;
 import org.diagnoseit.spike.trace.OperationInvocation;
 import org.diagnoseit.spike.trace.SubTrace;
 
-public class SubTraceImpl implements SubTrace {
+public class SubTraceImpl implements SubTrace, Iterable<InvocationRecord>{
 
 	private NavigableSet<InvocationRecord> invocationRecords;
 
@@ -97,11 +98,18 @@ public class SubTraceImpl implements SubTrace {
 		this.parent = parent;
 	}
 
-	protected void addSubTrace(SubTraceImpl subTrace) {
+	public void addSubTrace(SubTraceImpl subTrace) {
 		if (subTraces == null) {
 			subTraces = new ArrayList<SubTrace>();
 		}
 		subTraces.add(subTrace);
+		subTrace.setParentTrace(this);
 	}
+
+	public Iterator<InvocationRecord> iterator() {
+		return invocationRecords.iterator();
+	}
+
+
 
 }

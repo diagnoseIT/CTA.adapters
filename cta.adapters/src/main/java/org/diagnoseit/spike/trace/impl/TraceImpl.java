@@ -19,5 +19,14 @@ public class TraceImpl implements Trace{
 	public SubTrace getRootTrace() {
 		return root;
 	}
+	
+	
+	@Override
+	public String toString() {
+		String strRep = "";
+		
+		
+		return strRep;
+	}
 
 }

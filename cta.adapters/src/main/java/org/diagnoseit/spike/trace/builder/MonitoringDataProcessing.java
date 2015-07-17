@@ -95,6 +95,7 @@ public class MonitoringDataProcessing implements Runnable {
 			
 			TraceInvocationImpl traceInvocImpl = new TraceInvocationImpl(record, subtrace);
 			traceImpl.addInvocationRecord(traceInvocImpl);
+			traceImpl.addSubTrace(subtrace);
 			hashTraceMapping.remove(record.getOutCorrelationHash());
 			traces.remove(subtrace.getId());
 			
