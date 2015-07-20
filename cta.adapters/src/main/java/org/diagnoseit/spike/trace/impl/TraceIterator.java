@@ -14,11 +14,13 @@ public class TraceIterator implements Iterator<InvocationRecord> {
 	}
 
 	public boolean hasNext() {
-
-		while (currentIterator != null && !currentIterator.hasNext()) {
-			currentIterator = iteratorStack.pop();
+		try {
+			while (currentIterator != null && !currentIterator.hasNext()) {
+				currentIterator = iteratorStack.pop();
+			}
+		} catch (Exception e) {
+			return false;
 		}
-
 		return currentIterator != null;
 
 	}

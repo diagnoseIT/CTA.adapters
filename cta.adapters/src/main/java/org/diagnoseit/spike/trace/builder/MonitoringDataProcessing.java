@@ -36,6 +36,15 @@ public class MonitoringDataProcessing implements Runnable {
 		hashTraceMapping =  new HashMap<Integer, SubTraceImpl>();
 		traces = new HashMap<Long, SubTraceImpl>();
 	}
+	
+	public void addRecord(MonitoringRecord rec){
+		try {
+			recordQueue.put(rec);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public void start() {
 		run = true;
@@ -64,6 +73,7 @@ public class MonitoringDataProcessing implements Runnable {
 	}
 
 	private void processMonitoringRecord(MonitoringRecord record) {
+		//System.out.println(record.getTraceId() + "  -  " + record.getIndex()+ "  -  " + record.getStackDepth());
 		long traceId = record.getTraceId();
 		if (traces.get(traceId) == null) {
 			traces.put(traceId, new SubTraceImpl(traceId, new LocationImpl(
@@ -79,6 +89,7 @@ public class MonitoringDataProcessing implements Runnable {
 			traces.remove(traceImpl.getId());
 			Trace trace = new TraceImpl(traceImpl);
 			try {
+				System.out.println(trace);
 				DiagnoseIT.getInstance().appendTrace(trace);
 			} catch (InterruptedException e) {
 				throw new RuntimeException(e);
