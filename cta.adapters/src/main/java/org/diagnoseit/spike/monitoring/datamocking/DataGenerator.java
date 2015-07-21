@@ -41,8 +41,6 @@ public class DataGenerator implements Runnable {
 		run = false;
 	}
 
-
-
 	public void run() {
 		while(run){
 			if(DataGenerationWorker.numActive() < MAX_JOB_QUEUE){
@@ -57,7 +55,4 @@ public class DataGenerator implements Runnable {
 		}
 		
 	}
-
-	
-
 }
