@@ -11,7 +11,8 @@ global long RESPONSE_TIME_BASELINE;
 
 rule "Baseline"
 	when
-		eval(Trace.getRootTrace().getRoot().getExecutionTime() > RESPONSE_TIME_BASELINE)
-		trace : Trace
+		eval(Trace.getRootTrace().getRoot().getExecutionTime() > RESPONSE_TIME_BASELINE);
+		trace:Trace();
 	then
+		
 end
