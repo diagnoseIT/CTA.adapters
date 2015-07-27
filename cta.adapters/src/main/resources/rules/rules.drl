@@ -15,7 +15,7 @@ rule "Your First Rule"
     when
         //conditions
         // trace: Trace(root: rootTrace);
-        trace: Trace(rootTrace != null &&  rootTrace.root != null) 
+        trace: Trace(rootTrace.root.operationName != null) 
     then
         //actions
         System.out.println("trace:" + trace);
