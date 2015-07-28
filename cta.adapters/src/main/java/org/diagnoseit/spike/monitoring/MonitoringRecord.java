@@ -1,6 +1,6 @@
 package org.diagnoseit.spike.monitoring;
 
-public class MonitoringRecord {
+public class MonitoringRecord implements Comparable<MonitoringRecord>{
 	
 	private String operationName;
 	private String platformID;
@@ -9,6 +9,7 @@ public class MonitoringRecord {
 	private long startTime;
 	private long duration;
 	private long traceId;
+	private boolean start;
 	private Integer outCorrelationHash = null;
 	private Integer inCorrelationHash = null;
 	
@@ -119,6 +120,104 @@ public class MonitoringRecord {
 	 */
 	public void setInCorrelationHash(Integer inCorrelationHash) {
 		this.inCorrelationHash = inCorrelationHash;
+	}
+	/**
+	 * @return the start
+	 */
+	public boolean isStart() {
+		return start;
+	}
+	/**
+	 * @param start the start to set
+	 */
+	public void setStart(boolean start) {
+		this.start = start;
+	}
+	public int compareTo(MonitoringRecord o) {
+		int c = this.platformID.compareTo(o.getPlatformID());
+		if(c == 0){
+			int c2 = this.index - o.index;
+			if(c2 == 0){
+				return (int)(this.traceId - o.traceId);
+			}else{
+				return c2;
+			}
+		}else{
+			return c;
+		}
+		
+	}
+	
+	@Override
+	public String toString() {
+		return this.getPlatformID() + "  ix:" + this.getIndex() + "  sd:" + this.getStackDepth() + " ih:" + this.getInCorrelationHash();
+	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime
+				* result
+				+ ((inCorrelationHash == null) ? 0 : inCorrelationHash
+						.hashCode());
+		result = prime * result + index;
+		result = prime * result
+				+ ((operationName == null) ? 0 : operationName.hashCode());
+		result = prime
+				* result
+				+ ((outCorrelationHash == null) ? 0 : outCorrelationHash
+						.hashCode());
+		result = prime * result
+				+ ((platformID == null) ? 0 : platformID.hashCode());
+		result = prime * result + stackDepth;
+		result = prime * result + (start ? 1231 : 1237);
+		result = prime * result + (int) (traceId ^ (traceId >>> 32));
+		return result;
+	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MonitoringRecord other = (MonitoringRecord) obj;
+		if (inCorrelationHash == null) {
+			if (other.inCorrelationHash != null)
+				return false;
+		} else if (!inCorrelationHash.equals(other.inCorrelationHash))
+			return false;
+		if (index != other.index)
+			return false;
+		if (operationName == null) {
+			if (other.operationName != null)
+				return false;
+		} else if (!operationName.equals(other.operationName))
+			return false;
+		if (outCorrelationHash == null) {
+			if (other.outCorrelationHash != null)
+				return false;
+		} else if (!outCorrelationHash.equals(other.outCorrelationHash))
+			return false;
+		if (platformID == null) {
+			if (other.platformID != null)
+				return false;
+		} else if (!platformID.equals(other.platformID))
+			return false;
+		if (stackDepth != other.stackDepth)
+			return false;
+		if (start != other.start)
+			return false;
+		if (traceId != other.traceId)
+			return false;
+		return true;
 	}
 
 	

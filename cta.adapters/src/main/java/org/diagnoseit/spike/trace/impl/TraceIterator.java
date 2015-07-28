@@ -3,13 +3,15 @@ package org.diagnoseit.spike.trace.impl;
 import java.util.Iterator;
 import java.util.Stack;
 
-public class TraceIterator implements Iterator<InvocationRecord> {
+import org.diagnoseit.spike.trace.Callable;
+import org.diagnoseit.spike.trace.TraceInvocation;
 
-	private Stack<Iterator<InvocationRecord>> iteratorStack;
-	private Iterator<InvocationRecord> currentIterator;
+public class TraceIterator implements Iterator<Callable> {
+	private Stack<Iterator<Callable>> iteratorStack;
+	private Iterator<Callable> currentIterator;
 
 	public TraceIterator(SubTraceImpl subTrace) {
-		iteratorStack = new Stack<Iterator<InvocationRecord>>();
+		iteratorStack = new Stack<Iterator<Callable>>();
 		currentIterator = subTrace.iterator();
 	}
 
@@ -25,14 +27,14 @@ public class TraceIterator implements Iterator<InvocationRecord> {
 
 	}
 
-	public InvocationRecord next() {
+	public CallableImpl next() {
 		boolean hasNext = hasNext();
 		if (hasNext) {
-			InvocationRecord nextRec = currentIterator.next();
+			CallableImpl nextRec = (CallableImpl) currentIterator.next();
 			if (nextRec instanceof TraceInvocationImpl) {
 				iteratorStack.push(currentIterator);
-				currentIterator = ((SubTraceImpl) ((TraceInvocationImpl) nextRec)
-						.getTargetTrace()).iterator();
+				currentIterator = ((TraceInvocation) nextRec)
+						.getTargetTrace().iterator();
 			}
 
 			return nextRec;

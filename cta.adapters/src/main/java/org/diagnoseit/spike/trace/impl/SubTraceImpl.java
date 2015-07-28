@@ -1,46 +1,83 @@
 package org.diagnoseit.spike.trace.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NavigableSet;
-import java.util.TreeSet;
+import java.util.Set;
 
+import org.diagnoseit.spike.monitoring.MonitoringRecord;
 import org.diagnoseit.spike.trace.Callable;
 import org.diagnoseit.spike.trace.Location;
-import org.diagnoseit.spike.trace.OperationInvocation;
 import org.diagnoseit.spike.trace.SubTrace;
 
-public class SubTraceImpl implements SubTrace, Iterable<InvocationRecord>{
+public class SubTraceImpl implements SubTrace {
 
-	private NavigableSet<InvocationRecord> invocationRecords;
-
-	private SubTraceImpl parent = null;
-	private List<SubTrace> subTraces = null;
-	private long traceId;
+	protected TraceImpl trace;
+	private String platformId;
 	private Location location;
 
-	public SubTraceImpl(long id, Location location) {
-		traceId = id;
-		invocationRecords = new TreeSet<InvocationRecord>();
-		this.location=location;
+	public SubTraceImpl(TraceImpl trace, String platformId) {
+		this.trace = trace;
+		this.platformId = platformId;
+		location = new LocationImpl(platformId);
 	}
 
-	public OperationInvocation getRoot() {
-		InvocationRecord first = invocationRecords.first();
-		if (!(first instanceof OperationInvocation)) {
-			throw new RuntimeException(
-					"invocation record is not of type OperationInvocation!");
+	public Callable getRoot() {
+		for (MonitoringRecord rec : trace.monitoringRecords) {
+			if (rec.getIndex() == 0
+					&& rec.getTraceId() == trace.getLogicalTraceId()
+					&& rec.getPlatformID().equals(platformId)) {
+				return new CallableImpl(trace, platformId, rec);
+			}
 		}
-		return (OperationInvocation) first;
+		return null;
 	}
 
 	public SubTrace getParent() {
-		return parent;
+		MonitoringRecord rootRecord = null;
+		for (MonitoringRecord rec : trace.monitoringRecords) {
+			if (rec.getIndex() == 0
+					&& rec.getTraceId() == trace.getLogicalTraceId()
+					&& rec.getPlatformID().equals(platformId)) {
+				rootRecord = rec;
+				break;
+			}
+		}
+
+		if (rootRecord != null && rootRecord.getInCorrelationHash() != null) {
+			Integer hash = rootRecord.getInCorrelationHash();
+			for (MonitoringRecord rec : trace.monitoringRecords) {
+				if (rec.getOutCorrelationHash() == hash
+						&& rec.getTraceId() == trace.getLogicalTraceId()
+						&& !rec.getPlatformID().equals(platformId)) {
+					return new SubTraceImpl(trace, rec.getPlatformID());
+				}
+			}
+		}
+
+		return null;
 	}
 
 	public List<SubTrace> getSubTraces() {
-		return subTraces;
+		Set<SubTrace> subtraces = new HashSet<SubTrace>();
+		for (MonitoringRecord rec : trace.monitoringRecords) {
+			if (rec.getOutCorrelationHash() != null
+					&& rec.getTraceId() == trace.getLogicalTraceId()
+					&& rec.getPlatformID().equals(platformId)) {
+				MonitoringRecord tmpRec = rec;
+				for (MonitoringRecord rec2 : trace.monitoringRecords) {
+					if (rec2.getInCorrelationHash() == tmpRec
+							.getOutCorrelationHash()) {
+						subtraces.add(new SubTraceImpl(trace, rec2
+								.getPlatformID()));
+						break;
+					}
+				}
+
+			}
+		}
+		return new ArrayList<SubTrace>(subtraces);
 	}
 
 	public Location getLocation() {
@@ -48,68 +85,35 @@ public class SubTraceImpl implements SubTrace, Iterable<InvocationRecord>{
 	}
 
 	public long getId() {
-		return traceId;
+		return trace.getLogicalTraceId() * 7 + location.hashCode();
 	}
 
-	public int depth() {
-		int max = Integer.MIN_VALUE;
-		for (InvocationRecord rec : invocationRecords) {
-			if (rec.getStackDepth() > max) {
-				max = rec.getStackDepth();
+	public int maxDepth() {
+		int max = -1;
+		for (MonitoringRecord rec : trace.monitoringRecords) {
+			if (rec.getIndex() == 0
+					&& rec.getTraceId() == trace.getLogicalTraceId()) {
+				if (max < rec.getIndex()) {
+					max = rec.getIndex();
+				}
 			}
 		}
 		return max;
 	}
 
 	public int size() {
-		return invocationRecords.size();
-	}
-
-	protected MethodExecution getParentOf(InvocationRecord mExec) {
-		InvocationRecord tmpExec = mExec;
-		while (tmpExec != null
-				&& tmpExec.getStackDepth() != mExec.getStackDepth() - 1) {
-			tmpExec = invocationRecords.lower(tmpExec);
+		int count = 0;
+		for (MonitoringRecord rec : trace.monitoringRecords) {
+			if (rec.getIndex() == 0
+					&& rec.getTraceId() == trace.getLogicalTraceId()) {
+				count++;
+			}
 		}
-		if (!(tmpExec instanceof MethodExecution)) {
-			throw new RuntimeException(
-					"invocation record is not of type MethodExecution!");
-		}
-		return (MethodExecution) tmpExec;
+		return count;
 	}
 
-	protected List<Callable> getChildrenOf(MethodExecution mExec) {
-		List<Callable> result = new ArrayList<Callable>();
-		InvocationRecord tmpExec = invocationRecords.higher(mExec);
-		while (tmpExec != null
-				&& tmpExec.getStackDepth() > mExec.getStackDepth()) {
-			result.add(tmpExec);
-			tmpExec = invocationRecords.higher(tmpExec);
-		}
-		return result;
+	public Iterator<Callable> iterator() {
+		return new SubTraceIterator(platformId, trace);
 	}
-
-	public void addInvocationRecord(InvocationRecord rec) {
-		rec.setTrace(this);
-		invocationRecords.add(rec);
-	}
-
-	protected void setParentTrace(SubTraceImpl parent) {
-		this.parent = parent;
-	}
-
-	public void addSubTrace(SubTraceImpl subTrace) {
-		if (subTraces == null) {
-			subTraces = new ArrayList<SubTrace>();
-		}
-		subTraces.add(subTrace);
-		subTrace.setParentTrace(this);
-	}
-
-	public Iterator<InvocationRecord> iterator() {
-		return invocationRecords.iterator();
-	}
-
-
 
 }

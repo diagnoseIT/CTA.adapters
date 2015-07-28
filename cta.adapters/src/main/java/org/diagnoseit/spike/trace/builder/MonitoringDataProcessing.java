@@ -8,12 +8,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.diagnoseit.spike.monitoring.MonitoringRecord;
 import org.diagnoseit.spike.rules.processing.DiagnoseIT;
-import org.diagnoseit.spike.trace.Trace;
-import org.diagnoseit.spike.trace.impl.LocationImpl;
-import org.diagnoseit.spike.trace.impl.MethodExecution;
 import org.diagnoseit.spike.trace.impl.SubTraceImpl;
 import org.diagnoseit.spike.trace.impl.TraceImpl;
-import org.diagnoseit.spike.trace.impl.TraceInvocationImpl;
 
 public class MonitoringDataProcessing implements Runnable {
 	private static MonitoringDataProcessing instance;
@@ -25,7 +21,7 @@ public class MonitoringDataProcessing implements Runnable {
 		return instance;
 	}
 
-	private Map<Long, SubTraceImpl> traces;
+	private Map<Long, TraceImpl> traces;
 	private Map<Integer, SubTraceImpl> hashTraceMapping;
 	private BlockingQueue<MonitoringRecord> recordQueue;
 
@@ -33,11 +29,11 @@ public class MonitoringDataProcessing implements Runnable {
 
 	private MonitoringDataProcessing() {
 		recordQueue = new LinkedBlockingDeque<MonitoringRecord>();
-		hashTraceMapping =  new HashMap<Integer, SubTraceImpl>();
-		traces = new HashMap<Long, SubTraceImpl>();
+		hashTraceMapping = new HashMap<Integer, SubTraceImpl>();
+		traces = new HashMap<Long, TraceImpl>();
 	}
-	
-	public void addRecord(MonitoringRecord rec){
+
+	public synchronized void  addRecord(MonitoringRecord rec) {
 		try {
 			recordQueue.put(rec);
 		} catch (InterruptedException e) {
@@ -58,10 +54,16 @@ public class MonitoringDataProcessing implements Runnable {
 	public void run() {
 		while (run) {
 			MonitoringRecord record = null;
-			try {
-				record = recordQueue.poll(5, TimeUnit.SECONDS);
-			} catch (InterruptedException e) {
-				record = null;
+			synchronized(this){
+				record = recordQueue.poll();
+			} 
+			if(record == null){
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 
 			if (record != null) {
@@ -73,46 +75,24 @@ public class MonitoringDataProcessing implements Runnable {
 	}
 
 	private void processMonitoringRecord(MonitoringRecord record) {
-		//System.out.println(record.getTraceId() + "  -  " + record.getIndex()+ "  -  " + record.getStackDepth());
 		long traceId = record.getTraceId();
 		if (traces.get(traceId) == null) {
-			traces.put(traceId, new SubTraceImpl(traceId, new LocationImpl(
-					record.getPlatformID())));
+			traces.put(traceId, new TraceImpl());
 		}
-		SubTraceImpl traceImpl = traces.get(traceId);
-		
+		TraceImpl traceImpl = traces.get(traceId);
+		traceImpl.addMonitoringRecord(record);
 		if (record.getStackDepth() == 0
 				&& record.getInCorrelationHash() == null) {
 			// last event of trace --> trace complete
-			MethodExecution mExecution = new MethodExecution(record);
-			traceImpl.addInvocationRecord(mExecution);
-			traces.remove(traceImpl.getId());
-			Trace trace = new TraceImpl(traceImpl);
+			traces.remove(traceImpl.getLogicalTraceId());
 			try {
-				System.out.println(trace);
-				DiagnoseIT.getInstance().appendTrace(trace);
+				synchronized (this) {
+					System.out.println(traceImpl);
+					DiagnoseIT.getInstance().appendTrace(traceImpl);
+				}
 			} catch (InterruptedException e) {
 				throw new RuntimeException(e);
 			}
-		} else if (record.getStackDepth() == 0
-				&& record.getInCorrelationHash() != null) {
-			// last event of sub-trace --> sub-trace complete
-			MethodExecution mExecution = new MethodExecution(record);
-			traceImpl.addInvocationRecord(mExecution);
-			hashTraceMapping.put(record.getInCorrelationHash(), traceImpl);
-		} else if (record.getOutCorrelationHash() != null) {
-			// call to a sub-trace
-			SubTraceImpl subtrace= hashTraceMapping.get(record.getOutCorrelationHash());
-			
-			TraceInvocationImpl traceInvocImpl = new TraceInvocationImpl(record, subtrace);
-			traceImpl.addInvocationRecord(traceInvocImpl);
-			traceImpl.addSubTrace(subtrace);
-			hashTraceMapping.remove(record.getOutCorrelationHash());
-			traces.remove(subtrace.getId());
-			
-		} else {
-			MethodExecution mExecution = new MethodExecution(record);
-			traceImpl.addInvocationRecord(mExecution);
 		}
 	}
 
