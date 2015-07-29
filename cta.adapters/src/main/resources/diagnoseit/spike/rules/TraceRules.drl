@@ -6,13 +6,15 @@ import org.diagnoseit.spike.trace.OperationInvocation;
 import org.diagnoseit.spike.trace.SubTrace;
 import org.diagnoseit.spike.trace.Trace;
 import org.diagnoseit.spike.trace.TraceInvocation;
+import org.diagnoseit.spike.rules.impl
 
 global long RESPONSE_TIME_BASELINE;
 
-rule "Baseline"
+rule "Find callable contributing most to the response time"
 	when
-		eval(Trace.getRootTrace().getRoot().getExecutionTime() > RESPONSE_TIME_BASELINE);
-		trace:Trace();
+		trace:Trace(rootTrace != null &&  rootTrace.root != null);
 	then
-		
+		SlowMethodRule slowMethodRule = new SlowMethodRule();
+		slowMethodRule.execute(trace);
+				
 end
