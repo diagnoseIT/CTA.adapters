@@ -1,20 +1,26 @@
 package org.diagnoseit.spike.rules;
 
-import org.diagnoseit.spike.trace.Callable;
-import org.diagnoseit.spike.trace.Location;
-import org.diagnoseit.spike.trace.OperationInvocation;
-import org.diagnoseit.spike.trace.SubTrace;
+//list any import classes here.
 import org.diagnoseit.spike.trace.Trace;
-import org.diagnoseit.spike.trace.TraceInvocation;
-import org.diagnoseit.spike.rules.impl
+import org.diagnoseit.spike.trace.SubTrace;
+import org.diagnoseit.spike.rules.impl.SlowMethodRule;
 
-global long RESPONSE_TIME_BASELINE;
+//declare any global variables here
 
 rule "Find callable contributing most to the response time"
 	when
-		trace:Trace(rootTrace != null &&  rootTrace.root != null);
+		trace:Trace(root != null &&  root.root != null);
 	then
 		SlowMethodRule slowMethodRule = new SlowMethodRule();
 		slowMethodRule.execute(trace);
 				
+end
+
+rule "Your Second Rule"
+    //include attributes such as "salience" here...
+    when
+        //conditions
+    then
+        //actions
+
 end
