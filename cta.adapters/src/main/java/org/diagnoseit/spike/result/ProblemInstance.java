@@ -1,14 +1,17 @@
 package org.diagnoseit.spike.result;
 
+import org.diagnoseit.spike.trace.Callable;
+
 public class ProblemInstance {
 	
-	private String signature;
+	private Callable callable;
 
-	public String getSignature() {
-		return signature;
+	public Callable getCallable() {
+		return callable;
 	}
 
-	public void setSignature(String signature) {
-		this.signature = signature;
+	public void setCallable(Callable callable) {
+		this.callable = callable;
 	}
+	
 }
