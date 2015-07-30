@@ -1,12 +1,15 @@
 package org.diagnoseit.spike.rules.impl;
 
 import org.diagnoseit.spike.result.ProblemInstance;
+import org.diagnoseit.spike.tag.SlowMethodTag;
 import org.diagnoseit.spike.trace.Callable;
 import org.diagnoseit.spike.trace.Trace;
 
 public class SlowMethodRule {
 
 	private static final double THRESHOLD = 0.8;
+	
+	private SlowMethodTag slowMethodTag = null;
 
 	public void execute(Trace trace) {
 		
@@ -38,9 +41,16 @@ public class SlowMethodRule {
 		} while (continueSearch);
 		
 		if (suspectCallable != null) {
-			System.out.println("Root Cause: " + suspectCallable.getSignature());
-			System.out.println(suspectCallable.toString());
-			createProblemInstance(suspectCallable);
+			System.out.println("Slow Method diagnosed: " + suspectCallable.getSignature());
+//			System.out.println(suspectCallable.toString());
+	
+			SlowMethodTag slowMethodTag = new SlowMethodTag();
+			slowMethodTag.setCallable(suspectCallable);
+			
+			this.slowMethodTag = slowMethodTag;
+	
+//			createProblemInstance(suspectCallable);
+			
 		}
 
 
@@ -52,4 +62,13 @@ public class SlowMethodRule {
 
 		// TODO: Where to put the problem instance?
 	}
+
+	public SlowMethodTag getSlowMethodTag() {
+		return slowMethodTag;
+	}
+	
+	public boolean hasTag() {
+		return slowMethodTag != null;
+	}
+
 }
