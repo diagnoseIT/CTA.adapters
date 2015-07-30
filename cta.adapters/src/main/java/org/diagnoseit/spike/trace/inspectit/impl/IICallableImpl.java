@@ -22,7 +22,6 @@ public class IICallableImpl implements Callable {
 	private List<Callable> children = null;
 	private Callable parent = null;
 	private final IISubTraceImpl containingTrace;
-	private boolean firstChildAccess = true;
 	private MethodIdent methodIdentifier = null;
 	private final long position;
 	private final long depth;
@@ -57,7 +56,7 @@ public class IICallableImpl implements Callable {
 
 	@Override
 	public Callable getParent() {
-		return isData.getParentSequence() == null ? null : (Callable) isData.getParentSequence();
+		return parent;
 	}
 
 	@Override
@@ -174,14 +173,12 @@ public class IICallableImpl implements Callable {
 
 	@Override
 	public long getPosition() {
-		// TODO Auto-generated method stub
-		return 0;
+		return position;
 	}
 
 	@Override
 	public long getDepth() {
-		// TODO Auto-generated method stub
-		return 0;
+		return depth;
 	}
 
 }

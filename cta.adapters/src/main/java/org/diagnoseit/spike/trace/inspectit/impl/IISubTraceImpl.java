@@ -29,7 +29,7 @@ public class IISubTraceImpl implements SubTrace, Location {
 
 	@Override
 	public Callable getRoot() {
-		return (Callable) isData;
+		return root;
 	}
 
 	@Override
