@@ -17,7 +17,7 @@ public class IITraceImpl implements Trace {
 	
 	public IITraceImpl(InvocationSequenceData root, PlatformIdent pIdent) {
 		super();
-		this.root = new IISubTraceImpl(root, pIdent) ;
+		this.root = new IISubTraceImpl(this, root, pIdent) ;
 	}
 
 	@Override
@@ -48,6 +48,11 @@ public class IITraceImpl implements Trace {
 	@Override
 	public long size() {
 		return root.size();
+	}
+
+	@Override
+	public Iterator<SubTrace> subTraceIterator() {
+		return new IISubTraceIterator(root);
 	}
 
 }

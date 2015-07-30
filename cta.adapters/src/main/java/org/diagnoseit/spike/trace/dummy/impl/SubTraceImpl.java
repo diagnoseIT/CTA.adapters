@@ -6,10 +6,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.diagnoseit.spike.monitoring.MonitoringRecord;
 import org.diagnoseit.spike.trace.Callable;
 import org.diagnoseit.spike.trace.Location;
 import org.diagnoseit.spike.trace.SubTrace;
+import org.diagnoseit.spike.trace.Trace;
+import org.diagnoseit.spike.trace.dummy.datamocking.MonitoringRecord;
 
 public class SubTraceImpl implements SubTrace {
 
@@ -113,7 +114,12 @@ public class SubTraceImpl implements SubTrace {
 	}
 
 	public Iterator<Callable> iterator() {
-		return new SubTraceIterator(platformId, trace);
+		return new CallableIterator(platformId, trace);
+	}
+
+	@Override
+	public Trace getContainingTrace() {
+		return trace;
 	}
 
 }

@@ -1,8 +1,8 @@
 package org.diagnoseit.spike.trace.dummy.impl;
 
-import org.diagnoseit.spike.monitoring.MonitoringRecord;
 import org.diagnoseit.spike.trace.SubTrace;
 import org.diagnoseit.spike.trace.TraceInvocation;
+import org.diagnoseit.spike.trace.dummy.datamocking.MonitoringRecord;
 
 public class TraceInvocationImpl extends CallableImpl implements TraceInvocation {
 

@@ -5,11 +5,11 @@ import java.util.NavigableSet;
 import java.util.Stack;
 import java.util.TreeSet;
 
-import org.diagnoseit.spike.monitoring.MonitoringRecord;
 import org.diagnoseit.spike.trace.Callable;
 import org.diagnoseit.spike.trace.SubTrace;
 import org.diagnoseit.spike.trace.Trace;
 import org.diagnoseit.spike.trace.TraceInvocation;
+import org.diagnoseit.spike.trace.dummy.datamocking.MonitoringRecord;
 
 public class TraceImpl implements Trace {
 
@@ -91,6 +91,11 @@ public class TraceImpl implements Trace {
 			sum += sumSizes(child);
 		}
 		return sum;
+	}
+
+	@Override
+	public Iterator<SubTrace> subTraceIterator() {
+		return new SubTraceIterator(this, iterator());
 	}
 
 }

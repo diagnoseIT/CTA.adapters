@@ -34,18 +34,24 @@ public interface SubTrace extends Iterable<Callable> {
 
 	/**
 	 * 
-	 * @return the unique {@link Location} of the {@link SubTrace} Two operation
-	 *         executions ({@link Callable} instances) with different {@link Location} instances
-	 *         belong to different {@link SubTrace} instances.
+	 * @return the unique {@link Location} of the {@link SubTrace} Two operation executions (
+	 *         {@link Callable} instances) with different {@link Location} instances belong to
+	 *         different {@link SubTrace} instances.
 	 */
 	Location getLocation();
-	
+
+	/**
+	 * 
+	 * @return the {@link Trace} instance this {@link SubTrace} instance belongs to
+	 */
+	Trace getContainingTrace();
+
 	/**
 	 * 
 	 * @return unique identifier of the {@link SubTrace}
 	 */
 	long getId();
-	
+
 	/**
 	 * 
 	 * @return the maximum depth of the {@link SubTrace}
@@ -54,7 +60,8 @@ public interface SubTrace extends Iterable<Callable> {
 
 	/**
 	 * 
-	 * @return the number of nodes (i.e. {@link Callable}) in the tree structure of the corresponding {@link SubTrace}
+	 * @return the number of nodes (i.e. {@link Callable}) in the tree structure of the
+	 *         corresponding {@link SubTrace}
 	 */
 	long size();
 }

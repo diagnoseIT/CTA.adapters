@@ -1,4 +1,4 @@
-package org.diagnoseit.spike.trace.dummy.builder;
+package org.diagnoseit.spike.trace.dummy.impl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,11 +6,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
 
-import org.diagnoseit.spike.monitoring.MonitoringRecord;
 import org.diagnoseit.spike.rules.processing.DiagnoseIT;
 import org.diagnoseit.spike.trace.Trace;
-import org.diagnoseit.spike.trace.dummy.impl.SubTraceImpl;
-import org.diagnoseit.spike.trace.dummy.impl.TraceImpl;
+import org.diagnoseit.spike.trace.dummy.datamocking.MonitoringRecord;
 
 public class MonitoringDataProcessing implements Runnable {
 	private static MonitoringDataProcessing instance;

@@ -1,5 +1,7 @@
 package org.diagnoseit.spike.trace;
 
+import java.util.Iterator;
+
 /**
  * A {@link Trace} subsumes a logical invocation sequence through the target system potentially
  * passing multiple system nodes, containers or applications. Hence, a {@link Trace} consists of a
@@ -19,11 +21,17 @@ public interface Trace extends Iterable<Callable> {
 
 	/**
 	 * 
+	 * @return an iterator on the tree structure of the sub traces
+	 */
+	Iterator<SubTrace> subTraceIterator();
+
+	/**
+	 * 
 	 * @return the identifier of the entire logical trace (encapsulating all subtraces that belong
 	 *         to the logical trace)
 	 */
 	long getLogicalTraceId();
-	
+
 	/**
 	 * 
 	 * @return the maximum depth of the {@link Trace}
@@ -32,7 +40,8 @@ public interface Trace extends Iterable<Callable> {
 
 	/**
 	 * 
-	 * @return the number of nodes (i.e. {@link Callable}) in the tree structure of the corresponding {@link Trace}
+	 * @return the number of nodes (i.e. {@link Callable}) in the tree structure of the
+	 *         corresponding {@link Trace}
 	 */
 	long size();
 }

@@ -3,10 +3,10 @@ package org.diagnoseit.spike.trace.dummy.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.diagnoseit.spike.monitoring.MonitoringRecord;
 import org.diagnoseit.spike.trace.AdditionalInformation;
 import org.diagnoseit.spike.trace.Callable;
 import org.diagnoseit.spike.trace.SubTrace;
+import org.diagnoseit.spike.trace.dummy.datamocking.MonitoringRecord;
 
 public class CallableImpl implements Callable {
 

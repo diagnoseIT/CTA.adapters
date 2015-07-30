@@ -1,53 +1,38 @@
 package org.diagnoseit.spike.trace.inspectit.impl;
 
 import java.util.Iterator;
-import java.util.Stack;
 
-import org.diagnoseit.spike.trace.Callable;
+import org.diagnoseit.spike.trace.SubTrace;
 
-public class IISubTraceIterator implements Iterator<Callable> {
+public class IISubTraceIterator implements Iterator<SubTrace>{
 
-	private Stack<Integer> indexStack = new Stack<Integer>();
-	private Callable nextCallable;
-	private int currentChildIx = 0;
-
-	public IISubTraceIterator(Callable root) {
-		nextCallable = root;
+	private SubTrace currentTrace;
+	private boolean called = false;
+	public IISubTraceIterator(SubTrace currentTrace) {
+		super();
+		this.currentTrace = currentTrace;
 	}
 
 	@Override
 	public boolean hasNext() {
-		return nextCallable != null;
+		return !called;
 	}
 
 	@Override
-	public Callable next() {
-		Callable thisNext = nextCallable;
-		if (nextCallable != null) {
-			while ((nextCallable.getCallees() == null
-					|| nextCallable.getCallees().isEmpty() || currentChildIx >= nextCallable
-					.getCallees().size())
-					&& nextCallable.getParent() != null) {
-				nextCallable = (IICallableImpl) nextCallable.getParent();
-				currentChildIx = indexStack.pop();
-			}
-			if (currentChildIx < nextCallable.getCallees().size()) {
-				// nextCallable : next child
-				nextCallable = nextCallable
-						.getCallees().get(currentChildIx);
-				currentChildIx++;
-				indexStack.push(currentChildIx);
-			} else {
-				nextCallable = null;
-			}
+	public SubTrace next() {
+		if(called){
+			called = true;
+			return null;
+		}else{
+			called = true;
+			return currentTrace;
 		}
-		return thisNext;
 	}
 
 	@Override
 	public void remove() {
 		throw new UnsupportedOperationException();
-
+		
 	}
 
 }

@@ -1,4 +1,4 @@
-package org.diagnoseit.spike.monitoring;
+package org.diagnoseit.spike.trace.dummy.datamocking;
 
 public class MonitoringRecord implements Comparable<MonitoringRecord>{
 	

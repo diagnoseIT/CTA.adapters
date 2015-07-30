@@ -7,11 +7,11 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import org.diagnoseit.spike.gui.TraceTriggerGui;
-import org.diagnoseit.spike.monitoring.datamocking.DataGenerationWorker;
-import org.diagnoseit.spike.monitoring.datamocking.DataGenerator;
 import org.diagnoseit.spike.rules.processing.DiagnoseIT;
 import org.diagnoseit.spike.trace.Trace;
-import org.diagnoseit.spike.trace.dummy.builder.MonitoringDataProcessing;
+import org.diagnoseit.spike.trace.dummy.datamocking.DataGenerationWorker;
+import org.diagnoseit.spike.trace.dummy.datamocking.DataGenerator;
+import org.diagnoseit.spike.trace.dummy.impl.MonitoringDataProcessing;
 import org.diagnoseit.spike.trace.inspectit.impl.IITraceImpl;
 import org.diagnoseit.spike.trace.inspectit.reader.InvocationSequences;
 import org.diagnoseit.spike.trace.inspectit.reader.SerializerWrapper;

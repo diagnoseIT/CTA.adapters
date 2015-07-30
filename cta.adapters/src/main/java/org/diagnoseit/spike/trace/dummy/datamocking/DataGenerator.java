@@ -1,4 +1,4 @@
-package org.diagnoseit.spike.monitoring.datamocking;
+package org.diagnoseit.spike.trace.dummy.datamocking;
 
 import java.util.ArrayList;
 import java.util.List;

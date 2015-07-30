@@ -10,6 +10,7 @@ import java.util.List;
 import org.diagnoseit.spike.trace.Callable;
 import org.diagnoseit.spike.trace.Location;
 import org.diagnoseit.spike.trace.SubTrace;
+import org.diagnoseit.spike.trace.Trace;
 
 public class IISubTraceImpl implements SubTrace, Location {
 
@@ -19,11 +20,13 @@ public class IISubTraceImpl implements SubTrace, Location {
 	private final Callable root;
 	protected final PlatformIdent pIdent;
 	private long maxDepth = -1;
+	private Trace trace;
 
-	public IISubTraceImpl(InvocationSequenceData isData, PlatformIdent pIdent) {
+	public IISubTraceImpl(Trace containingTrace, InvocationSequenceData isData, PlatformIdent pIdent) {
 		this.root = new IICallableImpl(isData, this, null, 0);
 		this.isData = isData;
 		this.pIdent = pIdent;
+		trace = containingTrace;
 
 	}
 
@@ -74,7 +77,7 @@ public class IISubTraceImpl implements SubTrace, Location {
 
 	@Override
 	public Iterator<Callable> iterator() {
-		return new IISubTraceIterator(root);
+		return new IICallableIterator(root);
 	}
 
 	@Override
@@ -127,6 +130,11 @@ public class IISubTraceImpl implements SubTrace, Location {
 		}
 
 		return strBuilder.toString();
+	}
+
+	@Override
+	public Trace getContainingTrace() {
+		return trace;
 	}
 
 }

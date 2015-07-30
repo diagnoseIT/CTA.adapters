@@ -1,4 +1,4 @@
-package org.diagnoseit.spike.monitoring.datamocking;
+package org.diagnoseit.spike.trace.dummy.datamocking;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,9 +6,8 @@ import java.util.Random;
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.diagnoseit.spike.monitoring.MonitoringRecord;
 import org.diagnoseit.spike.trace.Trace;
-import org.diagnoseit.spike.trace.dummy.builder.MonitoringDataProcessing;
+import org.diagnoseit.spike.trace.dummy.impl.MonitoringDataProcessing;
 
 public class DataGenerationWorker implements Runnable {
 	private static final long AVG_INTER_DATA_TIME = 30; // in ms

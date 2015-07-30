@@ -7,98 +7,96 @@ import org.diagnoseit.spike.trace.Callable;
 import org.diagnoseit.spike.trace.SubTrace;
 import org.diagnoseit.spike.trace.TraceInvocation;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 public class IITraceInvocationImpl implements TraceInvocation {
 
 	@Override
 	public List<Callable> getCallees() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Callable getParent() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public SubTrace getContainingTrace() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public long getExecutionTime() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public long getEntryTime() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public long getExitTime() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public String getSignature() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public String getSimpleName() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public String getFullName() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public boolean isConstructor() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public List<String> getLables() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public boolean hasLabel(String label) {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public List<AdditionalInformation> getAdditionalInformation() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public <T> List<T> getAdditionalInformation(Class<T> type) {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public SubTrace getTargetTrace() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public boolean isSync() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public long getPosition() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public long getDepth() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 }

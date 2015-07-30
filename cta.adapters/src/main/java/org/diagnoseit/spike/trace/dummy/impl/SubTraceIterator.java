@@ -2,55 +2,56 @@ package org.diagnoseit.spike.trace.dummy.impl;
 
 import java.util.Iterator;
 
-import org.diagnoseit.spike.monitoring.MonitoringRecord;
 import org.diagnoseit.spike.trace.Callable;
+import org.diagnoseit.spike.trace.SubTrace;
+import org.diagnoseit.spike.trace.TraceInvocation;
 
-public class SubTraceIterator implements Iterator<Callable> {
+public class SubTraceIterator implements Iterator<SubTrace> {
 
-	private Iterator<MonitoringRecord> tIterator;
-	private MonitoringRecord next;
-	private String platformId;
-	private TraceImpl trace;
+	private Iterator<Callable> cIterator;
+	private TraceImpl traceImpl;
+	private String platformId = null;
 
-	public SubTraceIterator(String platformId, TraceImpl trace) {
+	public SubTraceIterator(TraceImpl traceImpl, Iterator<Callable> cIterator) {
 		super();
-		this.tIterator = trace.monitoringRecords.iterator();
-		this.platformId = platformId;
-		this.trace = trace;
-		moveInternalIterator();
-		
-	}
-
-	public boolean hasNext() {
-
-		return next != null;
-	}
-
-	public Callable next() {
-		Callable nextCallable = null;
-		if(next.getOutCorrelationHash() == null){
-			nextCallable = new CallableImpl(trace, platformId, next);
-		}else{
-			nextCallable = new TraceInvocationImpl(trace, platformId, next);
+		this.cIterator = cIterator;
+		this.traceImpl = traceImpl;
+		if (cIterator.hasNext()) {
+			platformId = ((CallableImpl) cIterator.next()).platformId;
 		}
-		moveInternalIterator();
-		return nextCallable;
 	}
 
-	private void moveInternalIterator() {
-		do {
-			if(!tIterator.hasNext()){
-				next = null;
-				break;
-			}
-			next = tIterator.next();
-		} while (next.getPlatformID() != platformId);
+	@Override
+	public boolean hasNext() {
+		return platformId != null;
 	}
-	
+
+	@Override
+	public SubTrace next() {
+		SubTrace result =  new SubTraceImpl(traceImpl, platformId);
+		Callable callable = null;
+		do{
+			if(cIterator.hasNext()){
+				callable = cIterator.next();
+			}else{
+				callable = null;
+			}
+			
+			
+		}while(callable != null && !(callable instanceof TraceInvocation));
+		
+		if(callable != null && (callable instanceof TraceInvocation)){
+			platformId = ((CallableImpl) cIterator.next()).platformId;
+		}else{
+			platformId = null;
+		}
+		return result;
+	}
+
 	@Override
 	public void remove() {
 		throw new UnsupportedOperationException();
-		
+
 	}
 
 }

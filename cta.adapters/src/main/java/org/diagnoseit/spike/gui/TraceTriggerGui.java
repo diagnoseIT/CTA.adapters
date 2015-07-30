@@ -1,20 +1,16 @@
 package org.diagnoseit.spike.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 import org.diagnoseit.spike.launcher.SpikeLauncher;
 import org.diagnoseit.spike.trace.Trace;
@@ -35,12 +31,7 @@ public class TraceTriggerGui {
 	
 		final JPanel topPanel = new JPanel(new FlowLayout());
 		topPanel.setSize(500, 200);
-//		leftPanel.setSize(250, 150);
 
-		 
-//		tracePanel.setSize(500, 800);
-//		tracePane.setVisible(false);
-//		tracePane.setMaximumSize(new Dimension(4000, 4000));
 
 		final JButton nextTraceButton = new JButton("Next Trace");
 		final JButton showTraceButton = new JButton("View Trace");
@@ -88,9 +79,7 @@ public class TraceTriggerGui {
 					showingTrace = true;
 					if (currentTrace != null) {
 						tracePane =  new JScrollPane(new JTree(new TraceTreeNode(currentTrace.getRoot().getRoot())));
-						//tree.setMaximumSize(new Dimension(4000, 4000));
-						//						treeview.setSize(500, 800);
-//						tracePane.add(new JPanel(tree));
+
 						tracePane.setVisible(true);
 						guiFrame.add(tracePane, BorderLayout.CENTER);
 						
@@ -109,7 +98,6 @@ public class TraceTriggerGui {
 		topPanel.add(label_2);
 		topPanel.add(buttonPanel);
 		guiFrame.add(topPanel, BorderLayout.PAGE_START);
-//		guiFrame.add(tracePane, BorderLayout.CENTER);
 		
 		guiFrame.setVisible(true);
 	}
