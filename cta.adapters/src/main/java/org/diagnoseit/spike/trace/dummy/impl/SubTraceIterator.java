@@ -1,4 +1,4 @@
-package org.diagnoseit.spike.trace.impl;
+package org.diagnoseit.spike.trace.dummy.impl;
 
 import java.util.Iterator;
 
@@ -45,6 +45,12 @@ public class SubTraceIterator implements Iterator<Callable> {
 			}
 			next = tIterator.next();
 		} while (next.getPlatformID() != platformId);
+	}
+	
+	@Override
+	public void remove() {
+		throw new UnsupportedOperationException();
+		
 	}
 
 }

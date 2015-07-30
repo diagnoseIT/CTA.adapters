@@ -1,4 +1,4 @@
-package org.diagnoseit.spike.trace.builder;
+package org.diagnoseit.spike.trace.dummy.builder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,8 +8,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.diagnoseit.spike.monitoring.MonitoringRecord;
 import org.diagnoseit.spike.rules.processing.DiagnoseIT;
-import org.diagnoseit.spike.trace.impl.SubTraceImpl;
-import org.diagnoseit.spike.trace.impl.TraceImpl;
+import org.diagnoseit.spike.trace.dummy.impl.SubTraceImpl;
+import org.diagnoseit.spike.trace.dummy.impl.TraceImpl;
 
 public class MonitoringDataProcessing implements Runnable {
 	private static MonitoringDataProcessing instance;
@@ -87,7 +87,7 @@ public class MonitoringDataProcessing implements Runnable {
 			traces.remove(traceImpl.getLogicalTraceId());
 			try {
 				synchronized (this) {
-					System.out.println(traceImpl);
+//					System.out.println(traceImpl);
 					DiagnoseIT.getInstance().appendTrace(traceImpl);
 				}
 			} catch (InterruptedException e) {

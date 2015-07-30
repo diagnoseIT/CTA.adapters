@@ -49,6 +49,7 @@ public class DiagnoseIT implements Runnable {
 			}
 
 			if (trace != null) {
+				System.out.println(trace);
 				traceAnalyzer.analyze(trace);
 			}
 		}

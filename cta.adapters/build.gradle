@@ -16,6 +16,21 @@ repositories {
 		name 'jboss'
 		url 'http://repository.jboss.org/nexus/content/groups/public-jboss'
 	}
+	maven {
+		name 'NEXUS-NT'
+		url 'http://repository.novatec-gmbh.de/content/repositories/3rd_party_libs/'
+	}
+	
+	maven {
+		name 'SpringSource - External Bundle Releases'
+		url 'http://repository.springsource.com/maven/bundles/external/'
+	}
+	
+	maven {
+		name 'SpringSource - SpringSource Bundle Releases'
+		url 'http://repository.springsource.com/maven/bundles/release/'
+	}
+	
 }
 
 dependencies {
@@ -23,13 +38,30 @@ dependencies {
 	compile group: 'org.drools', name: 'drools-compiler', version: '6.2.0.Final'
 	compile group: 'org.drools', name: 'drools-core', version: '6.2.0.Final'
 	compile group: 'org.kie', name: 'kie-api', version: '6.2.0.Final'
+	
+	//	Dependencies that are needed for inspectIT trace reading
+	compile group: 'org.ow2.asm', name: 'info.novatec.asm', version: '4.0'
+	compile group: 'de.javakaffee', name: 'info.novatec.kryo-serializers', version: '0.23'
+	compile group: 'com.esotericsoftware.kryonet', name: 'info.novatec.kryonet', version: '2.21'
+	compile group: 'com.esotericsoftware.minlog', name: 'info.novatec.minlog', version: '1.2'
+	compile group: 'com.esotericsoftware.reflectasm', name: 'info.novatec.reflectasm', version: '1.07'
+	compile group: 'com.esotericsoftware.kryo', name: 'kryo', version: '2.24.0'
+	compile group: 'org.objenesis', name: 'objenesis', version: '2.1'
+	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.5'
+	compile group: 'org.springframework', name: 'org.springframework.core', version: '3.1.0.RELEASE'
+	compile group: 'org.springframework', name: 'org.springframework.beans', version: '3.1.0.RELEASE'
+	compile group: 'org.springframework', name: 'org.springframework.context', version: '3.1.0.RELEASE'
+	compile files('libs/inspectit-commons.jar')
+	
+	
+	
     testCompile group: 'junit', name: 'junit', version: '4.+'
 }
 
-uploadArchives {
-    repositories {
-       flatDir {
-           dirs 'repos'
-       }
-    }
-}
+//uploadArchives {
+//    repositories {
+//       flatDir {
+//           dirs 'repos'
+//       }
+//    }
+//}

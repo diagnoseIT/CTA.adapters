@@ -1,4 +1,4 @@
-package org.diagnoseit.spike.trace.impl;
+package org.diagnoseit.spike.trace.dummy.impl;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -88,7 +88,7 @@ public class SubTraceImpl implements SubTrace {
 		return trace.getLogicalTraceId() * 7 + location.hashCode();
 	}
 
-	public int maxDepth() {
+	public long maxDepth() {
 		int max = -1;
 		for (MonitoringRecord rec : trace.monitoringRecords) {
 			if (rec.getIndex() == 0
@@ -101,7 +101,7 @@ public class SubTraceImpl implements SubTrace {
 		return max;
 	}
 
-	public int size() {
+	public long size() {
 		int count = 0;
 		for (MonitoringRecord rec : trace.monitoringRecords) {
 			if (rec.getIndex() == 0

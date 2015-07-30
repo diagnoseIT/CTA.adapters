@@ -7,7 +7,7 @@ import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.diagnoseit.spike.monitoring.MonitoringRecord;
-import org.diagnoseit.spike.trace.builder.MonitoringDataProcessing;
+import org.diagnoseit.spike.trace.dummy.builder.MonitoringDataProcessing;
 
 public class DataGenerationWorker implements Runnable {
 	private static final long AVG_INTER_DATA_TIME = 30; // in ms
@@ -148,11 +148,14 @@ private List<String> usedPlatformIds = new ArrayList<String>();
 		}else{
 			depth--;
 		}
-//		System.out.println(rec.getPlatformID() + "  ix:" + rec.getIndex() + "  sd:" + rec.getStackDepth() + " ih:" + rec.getInCorrelationHash());
 		
 	}
 
 	public static int numActive() {
 		return numActive.get();
+	}
+	
+	public long getTraceId(){
+		return traceId;
 	}
 }

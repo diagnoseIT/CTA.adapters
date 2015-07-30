@@ -1,4 +1,4 @@
-package org.diagnoseit.spike.trace.impl;
+package org.diagnoseit.spike.trace.dummy.impl;
 
 import java.util.Iterator;
 import java.util.Stack;
@@ -42,6 +42,12 @@ public class TraceIterator implements Iterator<Callable> {
 			return null;
 		}
 
+	}
+
+	@Override
+	public void remove() {
+		throw new UnsupportedOperationException();
+		
 	}
 
 }

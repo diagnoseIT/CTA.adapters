@@ -1,4 +1,4 @@
-package org.diagnoseit.spike.trace.impl;
+package org.diagnoseit.spike.trace.dummy.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,6 +101,24 @@ public class CallableImpl implements Callable {
 	public <T> List<T> getAdditionalInformation(Class<T> type) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public String getSimpleName() {
+		return getSignature();
+	}
+
+	public String getFullName() {
+		return getSignature();
+	}
+
+	@Override
+	public long getPosition() {
+		return internalRecord.getIndex();
+	}
+
+	@Override
+	public long getDepth() {
+		return internalRecord.getStackDepth();
 	}
 
 }

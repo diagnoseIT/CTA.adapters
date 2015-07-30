@@ -1,4 +1,4 @@
-package org.diagnoseit.spike.trace.impl;
+package org.diagnoseit.spike.trace.dummy.impl;
 
 import org.diagnoseit.spike.monitoring.MonitoringRecord;
 import org.diagnoseit.spike.trace.SubTrace;
