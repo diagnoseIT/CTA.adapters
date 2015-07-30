@@ -19,12 +19,18 @@ import org.diagnoseit.spike.trace.inspectit.reader.SerializerWrapper;
 public class SpikeLauncher {
 
 	private static final TraceSource TRACE_SOURCE = TraceSource.INSPECTIT_IMPORT;
-	private static final String INSPECTIT_DATA_PATH = "C:/Users/awe/Desktop/inspectIT-TestData/fromIvan";
+	private static String INSPECTIT_DATA_PATH;
 	private static Iterator<InvocationSequenceData> isDataIterator = null;
 	private static PlatformIdent pIdent = null;
 
 	public static void main(String[] args) throws IOException {
-
+		
+		if (TRACE_SOURCE == TraceSource.INSPECTIT_IMPORT && args.length < 1) {
+			throw new IllegalArgumentException("You should provide the inspectIT data path.");
+		} else {
+			INSPECTIT_DATA_PATH = args[0];
+		}
+		
 		DiagnoseIT.getInstance().start();
 
 		selectTraceSource();

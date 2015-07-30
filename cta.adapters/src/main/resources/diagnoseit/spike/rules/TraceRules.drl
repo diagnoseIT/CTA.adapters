@@ -4,6 +4,9 @@ package org.diagnoseit.spike.rules;
 import org.diagnoseit.spike.trace.Trace;
 import org.diagnoseit.spike.trace.SubTrace;
 import org.diagnoseit.spike.rules.impl.SlowMethodRule;
+import org.diagnoseit.spike.rules.impl.ExcessiveRPCRule;
+import org.diagnoseit.spike.tag.Tag;
+import org.diagnoseit.spike.tag.SlowMethodTag;
 
 //declare any global variables here
 
@@ -13,7 +16,19 @@ rule "Find callable contributing most to the response time"
 	then
 		SlowMethodRule slowMethodRule = new SlowMethodRule();
 		slowMethodRule.execute(trace);
+		
+		if (slowMethodRule.hasTag()) {
+			insert(slowMethodRule.getSlowMethodTag());
+		}
 				
+end
+
+rule "Find identical callees"
+    when
+	    tag:SlowMethodTag();
+    then
+        ExcessiveRPCRule excessiveRPCRule = new ExcessiveRPCRule();
+        excessiveRPCRule.execute(tag);
 end
 
 rule "Your Second Rule"
