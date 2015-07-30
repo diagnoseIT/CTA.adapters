@@ -21,10 +21,10 @@ public class TraceAnalyzer {
 		// session is created only once
 		kSession = kContainer.newKieSession("ksession-rules");
 
-		// listens for before and after rules activation events - default impl
-		kSession.addEventListener(new DebugAgendaEventListener());
-		// listens for inserts and updates of objects events - default impl
-		kSession.addEventListener(new DebugRuleRuntimeEventListener());
+//		// listens for before and after rules activation events - default impl
+//		kSession.addEventListener(new DebugAgendaEventListener());
+//		// listens for inserts and updates of objects events - default impl
+//		kSession.addEventListener(new DebugRuleRuntimeEventListener());
 	}
 
 	public void analyze(Trace trace) {

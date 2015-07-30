@@ -181,4 +181,43 @@ public class IICallableImpl implements Callable {
 		return depth;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((containingTrace == null) ? 0 : containingTrace.hashCode());
+		result = prime * result + (int) (depth ^ (depth >>> 32));
+		result = prime * result + (int) (position ^ (position >>> 32));
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		IICallableImpl other = (IICallableImpl) obj;
+		if (containingTrace == null) {
+			if (other.containingTrace != null)
+				return false;
+		} else if (!containingTrace.equals(other.containingTrace))
+			return false;
+		if (depth != other.depth)
+			return false;
+		if (position != other.position)
+			return false;
+		return true;
+	}
+	
+	
+
 }

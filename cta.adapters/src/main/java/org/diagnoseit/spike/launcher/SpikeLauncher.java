@@ -6,6 +6,7 @@ import info.novatec.inspectit.communication.data.InvocationSequenceData;
 import java.io.IOException;
 import java.util.Iterator;
 
+import org.diagnoseit.spike.gui.TraceTriggerGui;
 import org.diagnoseit.spike.monitoring.datamocking.DataGenerationWorker;
 import org.diagnoseit.spike.monitoring.datamocking.DataGenerator;
 import org.diagnoseit.spike.rules.processing.DiagnoseIT;
@@ -63,22 +64,21 @@ public class SpikeLauncher {
 	 * 
 	 * @return
 	 */
-	public static long nextTrace() {
-		long traceID = -1;
+	public static Trace nextTrace() {
+		Trace trace = null;
 
 		switch (TRACE_SOURCE) {
 		case GENERATOR_MANUAL:
 			DataGenerationWorker worker = new DataGenerationWorker(false);
-			traceID = worker.getTraceId();
 			worker.run();
+			trace = MonitoringDataProcessing.getInstance().getLastGeneratedTrace();
 			break;
 		case INSPECTIT_IMPORT:
 			if (!isDataIterator.hasNext()) {
 				throw new IllegalStateException();
 			}
 			InvocationSequenceData isd = isDataIterator.next();
-			Trace trace = new IITraceImpl(isd, pIdent);
-			traceID = trace.getLogicalTraceId();
+			trace = new IITraceImpl(isd, pIdent);
 			try {
 				DiagnoseIT.getInstance().appendTrace(trace);
 			} catch (InterruptedException e) {
@@ -90,7 +90,7 @@ public class SpikeLauncher {
 			break;
 		}
 
-		return traceID;
+		return trace;
 	}
 
 	enum TraceSource {

@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.diagnoseit.spike.monitoring.MonitoringRecord;
 import org.diagnoseit.spike.rules.processing.DiagnoseIT;
+import org.diagnoseit.spike.trace.Trace;
 import org.diagnoseit.spike.trace.dummy.impl.SubTraceImpl;
 import org.diagnoseit.spike.trace.dummy.impl.TraceImpl;
 
@@ -24,7 +25,7 @@ public class MonitoringDataProcessing implements Runnable {
 	private Map<Long, TraceImpl> traces;
 	private Map<Integer, SubTraceImpl> hashTraceMapping;
 	private BlockingQueue<MonitoringRecord> recordQueue;
-
+private Trace lastGeneratedTrace;
 	private volatile boolean run = false;
 
 	private MonitoringDataProcessing() {
@@ -88,6 +89,7 @@ public class MonitoringDataProcessing implements Runnable {
 			try {
 				synchronized (this) {
 //					System.out.println(traceImpl);
+					lastGeneratedTrace = traceImpl;
 					DiagnoseIT.getInstance().appendTrace(traceImpl);
 				}
 			} catch (InterruptedException e) {
@@ -95,5 +97,15 @@ public class MonitoringDataProcessing implements Runnable {
 			}
 		}
 	}
+
+	/**
+	 * Gets {@link #lastGeneratedTrace}.
+	 *   
+	 * @return {@link #lastGeneratedTrace}  
+	 */ 
+	public Trace getLastGeneratedTrace() {
+		return lastGeneratedTrace;
+	}
+
 
 }

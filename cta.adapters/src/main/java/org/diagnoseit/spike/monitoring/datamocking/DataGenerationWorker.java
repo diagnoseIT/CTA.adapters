@@ -7,6 +7,7 @@ import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.diagnoseit.spike.monitoring.MonitoringRecord;
+import org.diagnoseit.spike.trace.Trace;
 import org.diagnoseit.spike.trace.dummy.builder.MonitoringDataProcessing;
 
 public class DataGenerationWorker implements Runnable {
@@ -155,7 +156,7 @@ private List<String> usedPlatformIds = new ArrayList<String>();
 		return numActive.get();
 	}
 	
-	public long getTraceId(){
+	public long getTrace(){
 		return traceId;
 	}
 }
