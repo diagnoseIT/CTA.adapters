@@ -1,9 +1,9 @@
 package org.diagnoseit.spike.rules.processing;
 
 import org.diagnoseit.spike.trace.Trace;
+import org.diagnoseit.spike.util.debug.DiagnoseitAgendaEventListener;
+import org.diagnoseit.spike.util.debug.DiagnoseitRuleRuntimeEventListener;
 import org.kie.api.KieServices;
-import org.kie.api.event.rule.DebugAgendaEventListener;
-import org.kie.api.event.rule.DebugRuleRuntimeEventListener;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
@@ -21,10 +21,10 @@ public class TraceAnalyzer {
 		// session is created only once
 		kSession = kContainer.newKieSession("ksession-rules");
 
-//		// listens for before and after rules activation events - default impl
-//		kSession.addEventListener(new DebugAgendaEventListener());
-//		// listens for inserts and updates of objects events - default impl
-//		kSession.addEventListener(new DebugRuleRuntimeEventListener());
+		// listens for before and after rules activation events - default impl
+		kSession.addEventListener(new DiagnoseitAgendaEventListener());
+		// listens for inserts and updates of objects events - default impl
+		kSession.addEventListener(new DiagnoseitRuleRuntimeEventListener());
 	}
 
 	public void analyze(Trace trace) {
