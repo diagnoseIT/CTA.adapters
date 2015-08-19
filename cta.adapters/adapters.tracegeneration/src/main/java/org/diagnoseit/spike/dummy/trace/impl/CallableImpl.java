@@ -8,8 +8,6 @@ import org.diagnoseit.spike.shared.trace.AdditionalInformation;
 import org.diagnoseit.spike.shared.trace.Callable;
 import org.diagnoseit.spike.shared.trace.SubTrace;
 
-import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
-
 public class CallableImpl implements Callable {
 
 	protected TraceImpl trace;

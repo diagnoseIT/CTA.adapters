@@ -33,6 +33,11 @@ subprojects {
 			name 'SpringSource - SpringSource Bundle Releases'
 			url 'http://repository.springsource.com/maven/bundles/release/'
 		}
+		
+		maven {
+			name 'OSS Sonatype for Kieker'
+			url 'https://oss.sonatype.org/content/repositories/snapshots/'
+		}
 	}
 
 	dependencies {
