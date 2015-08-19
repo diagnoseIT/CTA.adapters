@@ -1,5 +1,8 @@
-*/.classpath
-*/.gradle/**
-*/.settings/**
-*/bin/**
-*/build/**
+**/.classpath
+**/.gradle/**
+**/.settings/**
+**/bin/**
+**/build/**
+**/.classpath
+**/.project
+diagnoseit.spike/diagnoseit/mySpike.config
