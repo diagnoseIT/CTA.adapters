@@ -13,7 +13,8 @@ import kieker.tools.traceAnalysis.filter.traceReconstruction.TraceReconstruction
 import kieker.tools.traceAnalysis.systemModel.repository.SystemModelRepository;
 
 import org.diagnoseit.spike.kieker.trace.impl.CTAFilter;
-import org.diagnoseit.spike.shared.trace.Trace;
+
+import rocks.cta.api.core.Trace;
 
 /**
  * Uses Kieker's analysis component and {@link CTAFilter} to convert Kieker traces into CTA.

@@ -2,15 +2,16 @@ package org.diagnoseit.spike.dummy.trace.impl;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import org.diagnoseit.spike.dummy.trace.generation.MonitoringRecord;
-import org.diagnoseit.spike.shared.trace.Callable;
-import org.diagnoseit.spike.shared.trace.Location;
-import org.diagnoseit.spike.shared.trace.SubTrace;
-import org.diagnoseit.spike.shared.trace.Trace;
+
+import rocks.cta.api.core.Callable;
+import rocks.cta.api.core.Location;
+import rocks.cta.api.core.SubTrace;
+import rocks.cta.api.core.Trace;
+import rocks.cta.api.core.TreeIterator;
 
 public class SubTraceImpl implements SubTrace {
 
@@ -89,7 +90,7 @@ public class SubTraceImpl implements SubTrace {
 		return trace.getLogicalTraceId() * 7 + location.hashCode();
 	}
 
-	public long maxDepth() {
+	public int maxDepth() {
 		int max = -1;
 		for (MonitoringRecord rec : trace.monitoringRecords) {
 			if (rec.getIndex() == 0
@@ -102,7 +103,7 @@ public class SubTraceImpl implements SubTrace {
 		return max;
 	}
 
-	public long size() {
+	public int size() {
 		int count = 0;
 		for (MonitoringRecord rec : trace.monitoringRecords) {
 			if (rec.getIndex() == 0
@@ -113,7 +114,7 @@ public class SubTraceImpl implements SubTrace {
 		return count;
 	}
 
-	public Iterator<Callable> iterator() {
+	public TreeIterator<Callable> iterator() {
 		return new CallableIterator(platformId, trace);
 	}
 

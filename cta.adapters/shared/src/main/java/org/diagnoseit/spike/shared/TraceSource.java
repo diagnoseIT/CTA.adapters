@@ -1,9 +1,8 @@
 package org.diagnoseit.spike.shared;
 
-import java.util.NoSuchElementException;
 import java.util.Properties;
 
-import org.diagnoseit.spike.shared.trace.Trace;
+import rocks.cta.api.core.Trace;
 
 public interface TraceSource {
 	public void initialize(Properties properties, TraceSink traceSink);

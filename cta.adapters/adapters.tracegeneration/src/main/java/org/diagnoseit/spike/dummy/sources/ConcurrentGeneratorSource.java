@@ -3,10 +3,11 @@ package org.diagnoseit.spike.dummy.sources;
 import java.util.Properties;
 
 import org.diagnoseit.spike.dummy.trace.generation.DataGenerator;
-import org.diagnoseit.spike.dummy.trace.impl.MonitoringDataProcessing;
+import org.diagnoseit.spike.dummy.trace.generation.MonitoringDataProcessing;
 import org.diagnoseit.spike.shared.TraceSink;
 import org.diagnoseit.spike.shared.TraceSource;
-import org.diagnoseit.spike.shared.trace.Trace;
+
+import rocks.cta.api.core.Trace;
 
 public class ConcurrentGeneratorSource implements TraceSource {
 

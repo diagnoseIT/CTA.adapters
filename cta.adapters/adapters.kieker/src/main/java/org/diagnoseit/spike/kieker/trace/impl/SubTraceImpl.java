@@ -4,25 +4,25 @@
 package org.diagnoseit.spike.kieker.trace.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import kieker.tools.traceAnalysis.systemModel.AbstractMessage;
-
-import org.diagnoseit.spike.shared.trace.Callable;
-import org.diagnoseit.spike.shared.trace.Location;
-import org.diagnoseit.spike.shared.trace.SubTrace;
-import org.diagnoseit.spike.shared.trace.Trace;
+import rocks.cta.api.core.Callable;
+import rocks.cta.api.core.Location;
+import rocks.cta.api.core.SubTrace;
+import rocks.cta.api.core.Trace;
+import rocks.cta.api.core.TreeIterator;
+import rocks.cta.api.utils.CallableIterator;
+import rocks.cta.api.utils.StringUtils;
 
 /**
  * @author Okanovic
  *
  */
 public class SubTraceImpl implements SubTrace {
-	private static final int MAX_PRINTABLE_AMOUNT = 200;
 	private Callable root;
-	private long maxDepth = -1;
-	long childCount;
+	private int maxDepth = -1;
+	int childCount;
 	private Trace trace;
 	private SubTrace parent;
 	private Location location;
@@ -32,6 +32,7 @@ public class SubTraceImpl implements SubTrace {
 
 	/**
 	 * Constructor creates subtrace belonging to parent subtrace.
+	 * 
 	 * @param parent
 	 * @param message
 	 */
@@ -46,6 +47,7 @@ public class SubTraceImpl implements SubTrace {
 
 	/**
 	 * Constructor creates root subtrace, belonging to provided trace.
+	 * 
 	 * @param trace
 	 * @param message
 	 */
@@ -85,11 +87,13 @@ public class SubTraceImpl implements SubTrace {
 	}
 
 	@Override
-	public long maxDepth() {
+	public int maxDepth() {
 		if (maxDepth < 0) {
 			for (Callable callable : this) {
-				if (callable.getDepth() > maxDepth) {
-					maxDepth = callable.getDepth();
+				CallableImpl callableImpl = (CallableImpl) callable;
+
+				if (callableImpl.getDepth() > maxDepth) {
+					maxDepth = callableImpl.getDepth();
 				}
 			}
 		}
@@ -98,36 +102,18 @@ public class SubTraceImpl implements SubTrace {
 	}
 
 	@Override
-	public long size() {
+	public int size() {
 		return childCount;
 	}
 
 	@Override
-	public Iterator<Callable> iterator() {
+	public TreeIterator<Callable> iterator() {
 		return new CallableIterator(root);
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder strBuilder = new StringBuilder();
-		for (Callable callable : this) {
-			if (callable.getPosition() == MAX_PRINTABLE_AMOUNT) {
-				for (int i = 0; i < callable.getDepth(); i++) {
-					strBuilder.append("   ");
-				}
-				strBuilder.append("...");
-			} else if (callable.getPosition() > MAX_PRINTABLE_AMOUNT) {
-				return strBuilder.toString();
-			} else {
-				for (int i = 0; i < callable.getDepth(); i++) {
-					strBuilder.append("   ");
-				}
-				strBuilder.append(callable.toString());
-				strBuilder.append("\n");
-			}
-		}
-
-		return strBuilder.toString();
+		return StringUtils.getStringRepresentation(this);
 	}
 
 	@Override
@@ -137,7 +123,7 @@ public class SubTraceImpl implements SubTrace {
 
 	public void addCallable(AbstractMessage abstractMessage) {
 		// TODO Auto-generated method stub
-		childCount ++;
+		childCount++;
 		callables.add(new CallableImpl(this, abstractMessage));
 	}
 

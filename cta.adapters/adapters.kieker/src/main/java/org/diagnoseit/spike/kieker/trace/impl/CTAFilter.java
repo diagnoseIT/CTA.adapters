@@ -24,8 +24,7 @@ import kieker.analysis.plugin.annotation.Plugin;
 import kieker.analysis.plugin.filter.AbstractFilterPlugin;
 import kieker.common.configuration.Configuration;
 import kieker.tools.traceAnalysis.systemModel.MessageTrace;
-
-import org.diagnoseit.spike.shared.trace.Trace;
+import rocks.cta.api.core.Trace;
 
 /**
  * This filter converts traces into CTA traces.

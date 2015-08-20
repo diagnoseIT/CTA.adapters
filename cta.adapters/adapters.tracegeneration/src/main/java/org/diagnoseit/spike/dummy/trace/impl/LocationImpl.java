@@ -1,6 +1,6 @@
 package org.diagnoseit.spike.dummy.trace.impl;
 
-import org.diagnoseit.spike.shared.trace.Location;
+import rocks.cta.api.core.Location;
 
 public class LocationImpl implements Location {
 

@@ -2,11 +2,11 @@ package org.diagnoseit.spike.dummy.trace.impl;
 
 import java.util.Iterator;
 
-import org.diagnoseit.spike.shared.trace.Callable;
-import org.diagnoseit.spike.shared.trace.SubTrace;
-import org.diagnoseit.spike.shared.trace.TraceInvocation;
+import rocks.cta.api.core.Callable;
+import rocks.cta.api.core.SubTrace;
+import rocks.cta.api.core.TreeIterator;
 
-public class SubTraceIterator implements Iterator<SubTrace> {
+public class SubTraceIterator implements TreeIterator<SubTrace> {
 
 	private Iterator<Callable> cIterator;
 	private TraceImpl traceImpl;
@@ -38,9 +38,9 @@ public class SubTraceIterator implements Iterator<SubTrace> {
 			}
 			
 			
-		}while(callable != null && !(callable instanceof TraceInvocation));
+		}while(callable != null && !(callable.isSubTraceInvocation()));
 		
-		if(callable != null && (callable instanceof TraceInvocation)){
+		if(callable != null && (callable.isSubTraceInvocation())){
 			platformId = ((CallableImpl) cIterator.next()).platformId;
 		}else{
 			platformId = null;
@@ -52,6 +52,12 @@ public class SubTraceIterator implements Iterator<SubTrace> {
 	public void remove() {
 		throw new UnsupportedOperationException();
 
+	}
+
+	@Override
+	public int currentDepth() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

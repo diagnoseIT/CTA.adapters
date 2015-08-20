@@ -8,6 +8,8 @@ public class MonitoringRecord implements Comparable<MonitoringRecord>{
 	private int stackDepth;
 	private long startTime;
 	private long duration;
+	private long executionTime;
+	private long CPUTime;
 	private long traceId;
 	private boolean start;
 	private Integer outCorrelationHash = null;
@@ -218,6 +220,30 @@ public class MonitoringRecord implements Comparable<MonitoringRecord>{
 		if (traceId != other.traceId)
 			return false;
 		return true;
+	}
+	/**
+	 * @return the executionTime
+	 */
+	public long getExecutionTime() {
+		return executionTime;
+	}
+	/**
+	 * @param executionTime the executionTime to set
+	 */
+	public void setExecutionTime(long executionTime) {
+		this.executionTime = executionTime;
+	}
+	/**
+	 * @return the cPUTime
+	 */
+	public long getCPUTime() {
+		return CPUTime;
+	}
+	/**
+	 * @param cPUTime the cPUTime to set
+	 */
+	public void setCPUTime(long cPUTime) {
+		CPUTime = cPUTime;
 	}
 
 	

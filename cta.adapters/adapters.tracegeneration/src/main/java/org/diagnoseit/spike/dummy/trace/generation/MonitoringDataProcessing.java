@@ -1,13 +1,15 @@
-package org.diagnoseit.spike.dummy.trace.impl;
+package org.diagnoseit.spike.dummy.trace.generation;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
-import org.diagnoseit.spike.dummy.trace.generation.MonitoringRecord;
+import org.diagnoseit.spike.dummy.trace.impl.SubTraceImpl;
+import org.diagnoseit.spike.dummy.trace.impl.TraceImpl;
 import org.diagnoseit.spike.shared.TraceSink;
-import org.diagnoseit.spike.shared.trace.Trace;
+
+import rocks.cta.api.core.Trace;
 
 public class MonitoringDataProcessing implements Runnable {
 	private static MonitoringDataProcessing instance;

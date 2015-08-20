@@ -4,21 +4,24 @@
 package org.diagnoseit.spike.kieker.trace.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-import kieker.common.util.signature.Signature;
 import kieker.tools.traceAnalysis.systemModel.AbstractMessage;
 import kieker.tools.traceAnalysis.systemModel.Operation;
-
-import org.diagnoseit.spike.shared.trace.AdditionalInformation;
-import org.diagnoseit.spike.shared.trace.Callable;
-import org.diagnoseit.spike.shared.trace.SubTrace;
+import rocks.cta.api.core.AdditionalInformation;
+import rocks.cta.api.core.Callable;
+import rocks.cta.api.core.SubTrace;
+import rocks.cta.api.utils.StringUtils;
 
 /**
  * @author Okanovic
  *
  */
 public class CallableImpl implements Callable {
+	private static final String PACKAGE_DELIMITER = ".";
 	Callable parent;
 	SubTrace containingSubTrace;
 	SubTrace targetTrace;
@@ -27,21 +30,17 @@ public class CallableImpl implements Callable {
 	long entryTime;
 	long exitTime;
 	long responseTime;
-	String signature;
-	String simpleName;
-	String fullName;
+
+	Operation operation;
 	long cpuTime;
 	boolean constructor;
-	String returnType;
 
-	private long position;
-	private long depth;
+	private int position;
+	private int depth;
 
 	@Override
 	public String toString() {
-//		return "CallableImpl [entryTime=" + entryTime + ", exitTime=" + exitTime + ", responseTime=" + responseTime
-//				+ ", signature=" + signature + "]";
-		return signature + " (" + responseTime / 1000000 + " ms)";
+		return StringUtils.getStringRepresentation(this);
 	}
 
 	private void parseMessageData(AbstractMessage abstractMessage) {
@@ -56,24 +55,14 @@ public class CallableImpl implements Callable {
 		this.position = abstractMessage.getReceivingExecution().getEoi();
 		this.depth = abstractMessage.getReceivingExecution().getEss();
 
-		Signature s = abstractMessage.getReceivingExecution().getOperation().getSignature();
-		Operation o = abstractMessage.getReceivingExecution().getOperation();
-		this.simpleName = s.getName();
-		this.returnType = s.getReturnType();
-		this.fullName = o.getComponentType().getFullQualifiedName() + "." + this.simpleName;
-		String params = "";
-		for (String param : s.getParamTypeList()) {
-			params += param + ", ";
-		}
-		if (params.length() > 2)
-			params = params.substring(0, params.length() - 2);
-		this.signature = this.fullName + "(" + params + ")";
+		operation = abstractMessage.getReceivingExecution().getOperation();
+
 	}
 
 	public CallableImpl(Callable lastCallable, AbstractMessage abstractMessage) {
 		// TODO Auto-generated constructor stub
 		this.parent = lastCallable;
-		this.containingSubTrace = lastCallable.getContainingTrace();
+		this.containingSubTrace = lastCallable.getContainingSubTrace();
 
 		parseMessageData(abstractMessage);
 
@@ -99,7 +88,7 @@ public class CallableImpl implements Callable {
 	}
 
 	@Override
-	public SubTrace getContainingTrace() {
+	public SubTrace getContainingSubTrace() {
 		return containingSubTrace;
 	}
 
@@ -120,17 +109,14 @@ public class CallableImpl implements Callable {
 
 	@Override
 	public String getSignature() {
-		return signature;
-	}
+		String params = "";
+		for (String param : operation.getSignature().getParamTypeList()) {
+			params += param + ", ";
+		}
+		if (params.length() > 2)
+			params = params.substring(0, params.length() - 2);
 
-	@Override
-	public String getSimpleName() {
-		return simpleName;
-	}
-
-	@Override
-	public String getFullName() {
-		return fullName;
+		return operation.getComponentType().getFullQualifiedName() + PACKAGE_DELIMITER + operation.getSignature().getName() + params;
 	}
 
 	@Override
@@ -139,9 +125,9 @@ public class CallableImpl implements Callable {
 	}
 
 	@Override
-	public List<String> getLables() {
+	public List<String> getLabels() {
 		// TODO Auto-generated method stub
-		return null;
+		return Collections.EMPTY_LIST;
 	}
 
 	@Override
@@ -151,32 +137,88 @@ public class CallableImpl implements Callable {
 	}
 
 	@Override
-	public long getPosition() {
-		return position;
-	}
-
-	@Override
-	public long getDepth() {
-		return depth;
-	}
-
-	@Override
 	public List<AdditionalInformation> getAdditionalInformation() {
 		// TODO Auto-generated method stub
-		return null;
+		return Collections.EMPTY_LIST;
 	}
 
 	@Override
-	public <T> List<T> getAdditionalInformation(Class<T> type) {
+	public <T extends AdditionalInformation> Collection<T> getAdditionalInformation(Class<T> type) {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public SubTrace getTargetTrace() {
-		return targetTrace;
+		return Collections.EMPTY_LIST;
 	}
 
 	public void setTargetTrace(SubTrace targetTrace) {
 		this.targetTrace = targetTrace;
+	}
+
+	@Override
+	public long getCPUTime() {
+		return cpuTime;
+	}
+
+	@Override
+	public String getClassName() {
+		String className = operation.getComponentType().getFullQualifiedName();
+		String pkgName = operation.getComponentType().getPackageName();
+		if (pkgName != null && !pkgName.isEmpty()) {
+			className = className.substring(pkgName.length() + 1);
+		}
+
+		return className;
+	}
+
+	@Override
+	public SubTrace getInvokedSubTrace() {
+		return targetTrace;
+	}
+
+	@Override
+	public String getMethodName() {
+		return operation.getSignature().getName();
+	}
+
+	@Override
+	public String getPackageName() {
+		return operation.getComponentType().getPackageName();
+	}
+
+	@Override
+	public List<String> getParameterTypes() {
+		return Arrays.asList(operation.getSignature().getParamTypeList());
+	}
+
+	@Override
+	public long getResponseTime() {
+		return responseTime;
+	}
+
+	@Override
+	public String getReturnType() {
+		return operation.getSignature().getReturnType();
+	}
+
+	@Override
+	public boolean isAsyncInvocation() {
+		return false;
+	}
+
+	@Override
+	public boolean isSubTraceInvocation() {
+		return targetTrace != null;
+	}
+
+	protected int getPosition() {
+		return position;
+	}
+
+	protected int getDepth() {
+		return depth;
+	}
+
+	@Override
+	public int getChildCount() {
+		// TODO Auto-generated method stub
+		return -1;
 	}
 }

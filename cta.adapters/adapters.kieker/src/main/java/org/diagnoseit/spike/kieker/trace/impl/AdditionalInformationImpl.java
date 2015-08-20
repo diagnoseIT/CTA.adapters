@@ -3,7 +3,7 @@
  */
 package org.diagnoseit.spike.kieker.trace.impl;
 
-import org.diagnoseit.spike.shared.trace.AdditionalInformation;
+import rocks.cta.api.core.AdditionalInformation;
 
 /**
  * @author Okanovic

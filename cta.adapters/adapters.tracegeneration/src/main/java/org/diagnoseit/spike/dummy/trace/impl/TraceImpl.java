@@ -6,10 +6,11 @@ import java.util.Stack;
 import java.util.TreeSet;
 
 import org.diagnoseit.spike.dummy.trace.generation.MonitoringRecord;
-import org.diagnoseit.spike.shared.trace.Callable;
-import org.diagnoseit.spike.shared.trace.SubTrace;
-import org.diagnoseit.spike.shared.trace.Trace;
-import org.diagnoseit.spike.shared.trace.TraceInvocation;
+
+import rocks.cta.api.core.Callable;
+import rocks.cta.api.core.SubTrace;
+import rocks.cta.api.core.Trace;
+import rocks.cta.api.core.TreeIterator;
 
 public class TraceImpl implements Trace {
 
@@ -19,7 +20,7 @@ public class TraceImpl implements Trace {
 		monitoringRecords.add(rec);
 	}
 
-	public Iterator<Callable> iterator() {
+	public TreeIterator<Callable> iterator() {
 		return new TraceIterator((SubTraceImpl) getRoot());
 	}
 
@@ -53,14 +54,14 @@ public class TraceImpl implements Trace {
 			for (int i = 0; i < indent + depth; i++) {
 				strBuilder.append("   ");
 			}
-			if (cImpl instanceof TraceInvocation) {
+			if (cImpl.isSubTraceInvocation()) {
 				strBuilder.append("-->");
 				platformStack.push(cImpl.internalRecord.getPlatformID());
 				depthStack.push(depth + 1);
 				indent += depth + 1;
 			} else {
-				strBuilder.append(cImpl.getSignature() + " - " + cImpl.getExecutionTime() + "ms   " + cImpl.getContainingTrace().getLocation().getHost() + ", "
-						+ cImpl.getContainingTrace().getLocation().getRuntimeEnvironment());
+				strBuilder.append(cImpl.getSignature() + " - " + cImpl.getExecutionTime() + "ms   " + cImpl.getContainingSubTrace().getLocation().getHost() + ", "
+						+ cImpl.getContainingSubTrace().getLocation().getRuntimeEnvironment());
 			}
 			strBuilder.append("\n");
 			currentPlatform = cImpl.internalRecord.getPlatformID();
@@ -68,24 +69,15 @@ public class TraceImpl implements Trace {
 		return strBuilder.toString();
 	}
 
-	@Override
-	public long maxDepth() {
-		long max = -1;
-		for (Callable callable : this) {
-			if (callable.getDepth() > max) {
-				max = callable.getDepth();
-			}
-		}
-		return max;
-	}
+	
 
 	@Override
-	public long size() {
+	public int size() {
 		return sumSizes(getRoot());
 	}
 
-	private long sumSizes(SubTrace subTrace) {
-		long sum = 0;
+	private int sumSizes(SubTrace subTrace) {
+		int sum = 0;
 		sum += subTrace.size();
 		for (SubTrace child : subTrace.getSubTraces()) {
 			sum += sumSizes(child);
@@ -94,7 +86,7 @@ public class TraceImpl implements Trace {
 	}
 
 	@Override
-	public Iterator<SubTrace> subTraceIterator() {
+	public TreeIterator<SubTrace> subTraceIterator() {
 		return new SubTraceIterator(this, iterator());
 	}
 

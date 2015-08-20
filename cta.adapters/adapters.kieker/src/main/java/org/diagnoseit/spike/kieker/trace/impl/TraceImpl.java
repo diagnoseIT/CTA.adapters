@@ -4,17 +4,19 @@
 package org.diagnoseit.spike.kieker.trace.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import kieker.tools.traceAnalysis.systemModel.AbstractMessage;
 import kieker.tools.traceAnalysis.systemModel.MessageTrace;
 import kieker.tools.traceAnalysis.systemModel.SynchronousCallMessage;
-
-import org.diagnoseit.spike.shared.trace.Callable;
-import org.diagnoseit.spike.shared.trace.Location;
-import org.diagnoseit.spike.shared.trace.SubTrace;
-import org.diagnoseit.spike.shared.trace.Trace;
+import rocks.cta.api.core.Callable;
+import rocks.cta.api.core.Location;
+import rocks.cta.api.core.SubTrace;
+import rocks.cta.api.core.Trace;
+import rocks.cta.api.core.TreeIterator;
+import rocks.cta.api.utils.CallableIteratorOnTrace;
+import rocks.cta.api.utils.StringUtils;
+import rocks.cta.api.utils.SubTraceIterator;
 
 /**
  * @author Okanovic
@@ -51,7 +53,7 @@ public class TraceImpl implements Trace {
 				} else { // else add subtrace
 					SubTrace newSubTrace = new SubTraceImpl(lastSubTrace, newCallable, abstractMessage);
 					lastSubTrace.getSubTraces().add(newSubTrace);
-					((CallableImpl)lastCallable).setTargetTrace(newSubTrace);
+					((CallableImpl) lastCallable).setTargetTrace(newSubTrace);
 					lastLocation = newSubTrace.getLocation();
 					lastSubTrace = newSubTrace;
 				}
@@ -64,8 +66,8 @@ public class TraceImpl implements Trace {
 	}
 
 	@Override
-	public Iterator<Callable> iterator() {
-		return root.iterator();
+	public TreeIterator<Callable> iterator() {
+		return new CallableIteratorOnTrace(root);
 	}
 
 	@Override
@@ -80,21 +82,16 @@ public class TraceImpl implements Trace {
 
 	@Override
 	public String toString() {
-		return root.toString();
+		return StringUtils.getStringRepresentation(this);
 	}
 
 	@Override
-	public long maxDepth() {
-		return root.maxDepth();
-	}
-
-	@Override
-	public long size() {
+	public int size() {
 		return root.size();
 	}
 
 	@Override
-	public Iterator<SubTrace> subTraceIterator() {
+	public TreeIterator<SubTrace> subTraceIterator() {
 		return new SubTraceIterator(root);
 	}
 }

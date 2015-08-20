@@ -3,10 +3,10 @@ package org.diagnoseit.spike.dummy.trace.impl;
 import java.util.Iterator;
 import java.util.Stack;
 
-import org.diagnoseit.spike.shared.trace.Callable;
-import org.diagnoseit.spike.shared.trace.TraceInvocation;
+import rocks.cta.api.core.Callable;
+import rocks.cta.api.core.TreeIterator;
 
-public class TraceIterator implements Iterator<Callable> {
+public class TraceIterator implements TreeIterator<Callable> {
 	private Stack<Iterator<Callable>> iteratorStack;
 	private Iterator<Callable> currentIterator;
 
@@ -31,10 +31,10 @@ public class TraceIterator implements Iterator<Callable> {
 		boolean hasNext = hasNext();
 		if (hasNext) {
 			CallableImpl nextRec = (CallableImpl) currentIterator.next();
-			if (nextRec instanceof TraceInvocationImpl) {
+
+			if (nextRec.isSubTraceInvocation()) {
 				iteratorStack.push(currentIterator);
-				currentIterator = ((TraceInvocation) nextRec)
-						.getTargetTrace().iterator();
+				currentIterator = nextRec.getInvokedSubTrace().iterator();
 			}
 
 			return nextRec;
@@ -47,7 +47,13 @@ public class TraceIterator implements Iterator<Callable> {
 	@Override
 	public void remove() {
 		throw new UnsupportedOperationException();
-		
+
+	}
+
+	@Override
+	public int currentDepth() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

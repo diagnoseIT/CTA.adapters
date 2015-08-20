@@ -9,7 +9,8 @@ import kieker.analysis.exception.AnalysisConfigurationException;
 import org.diagnoseit.spike.kieker.trace.test.TraceConversion;
 import org.diagnoseit.spike.shared.TraceSink;
 import org.diagnoseit.spike.shared.TraceSource;
-import org.diagnoseit.spike.shared.trace.Trace;
+
+import rocks.cta.api.core.Trace;
 
 public class KiekerTracesFileImporter implements TraceSource {
 

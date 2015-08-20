@@ -4,8 +4,7 @@
 package org.diagnoseit.spike.kieker.trace.impl;
 
 import kieker.tools.traceAnalysis.systemModel.AbstractMessage;
-
-import org.diagnoseit.spike.shared.trace.Location;
+import rocks.cta.api.core.Location;
 
 
 /**
@@ -27,7 +26,7 @@ public class LocationImpl implements Location {
 	}
 
 	public LocationImpl(AbstractMessage message) {
-		this(message.getReceivingExecution().getAllocationComponent().getExecutionContainer().getName(), "", "", "");
+		this(message.getReceivingExecution().getAllocationComponent().getExecutionContainer().getName(), UNKOWN, UNKOWN, UNKOWN);
 	}
 
 	@Override

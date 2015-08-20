@@ -23,7 +23,17 @@ subprojects {
 			name 'NEXUS-NT'
 			url 'http://repository.novatec-gmbh.de/content/repositories/3rd_party_libs/'
 		}
-	
+		
+		maven {
+			name 'diagnoseIT Nexus'
+			url 'http://repository.novatec-gmbh.de/content/repositories/diagnoseIT/'
+		}
+		
+		maven {
+			name 'diagnoseIT-snapshots Nexus'
+			url 'http://repository.novatec-gmbh.de/content/repositories/diagnoseIT-snapshots/'
+		}
+		
 		maven {
 			name 'SpringSource - External Bundle Releases'
 			url 'http://repository.springsource.com/maven/bundles/external/'
@@ -41,6 +51,7 @@ subprojects {
 	}
 
 	dependencies {
+		compile group: 'rocks.cta', name: 'cta.api', version: '1.0.0-SNAPSHOT', changing: true
 		testCompile group: 'junit', name: 'junit', version: '4.+'
 	}
 }

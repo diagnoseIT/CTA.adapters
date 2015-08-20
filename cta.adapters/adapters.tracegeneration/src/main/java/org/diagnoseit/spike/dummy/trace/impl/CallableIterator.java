@@ -3,9 +3,11 @@ package org.diagnoseit.spike.dummy.trace.impl;
 import java.util.Iterator;
 
 import org.diagnoseit.spike.dummy.trace.generation.MonitoringRecord;
-import org.diagnoseit.spike.shared.trace.Callable;
 
-public class CallableIterator implements Iterator<Callable> {
+import rocks.cta.api.core.Callable;
+import rocks.cta.api.core.TreeIterator;
+
+public class CallableIterator implements TreeIterator<Callable> {
 
 	private Iterator<MonitoringRecord> tIterator;
 	private MonitoringRecord next;
@@ -18,7 +20,7 @@ public class CallableIterator implements Iterator<Callable> {
 		this.platformId = platformId;
 		this.trace = trace;
 		moveInternalIterator();
-		
+
 	}
 
 	public boolean hasNext() {
@@ -28,29 +30,32 @@ public class CallableIterator implements Iterator<Callable> {
 
 	public Callable next() {
 		Callable nextCallable = null;
-		if(next.getOutCorrelationHash() == null){
-			nextCallable = new CallableImpl(trace, platformId, next);
-		}else{
-			nextCallable = new TraceInvocationImpl(trace, platformId, next);
-		}
+		nextCallable = new CallableImpl(trace, platformId, next);
+
 		moveInternalIterator();
 		return nextCallable;
 	}
 
 	private void moveInternalIterator() {
 		do {
-			if(!tIterator.hasNext()){
+			if (!tIterator.hasNext()) {
 				next = null;
 				break;
 			}
 			next = tIterator.next();
 		} while (next.getPlatformID() != platformId);
 	}
-	
+
 	@Override
 	public void remove() {
 		throw new UnsupportedOperationException();
-		
+
+	}
+
+	@Override
+	public int currentDepth() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
