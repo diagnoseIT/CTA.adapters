@@ -21,7 +21,7 @@ public class KiekerTracesFileImporter implements TraceSource {
 	@Override
 	public void initialize(Properties properties, TraceSink traceSink) {
 		this.traceSink = traceSink;
-		kiekerQueue = new LinkedBlockingQueue<Trace>();
+		kiekerQueue = new LinkedBlockingQueue<Trace>(1);
 
 		String dataPathsStr = properties.getProperty(DATA_PATHS_KEY);
 		if (dataPathsStr == null) {
@@ -29,11 +29,9 @@ public class KiekerTracesFileImporter implements TraceSource {
 		}
 		String[] traceFolders = dataPathsStr.split(",");
 
-		try {
-			TraceConversion.runAnalysis(kiekerQueue, traceFolders);
-		} catch (AnalysisConfigurationException e) {
-			throw new RuntimeException(e);
-		}
+		AnalysisThread thread = new AnalysisThread();
+		thread.setTraceFolders(traceFolders);
+		thread.start();
 	}
 
 	@Override
@@ -66,4 +64,19 @@ public class KiekerTracesFileImporter implements TraceSource {
 		throw new UnsupportedOperationException("This operation is NOT available for manual trace sources!");
 	}
 
+	private class AnalysisThread extends Thread {
+		private String[] traceFolders;
+
+		public void setTraceFolders(String[] traceFolders) {
+			this.traceFolders = traceFolders;
+		}
+
+		public void run() {
+			try {
+				TraceConversion.runAnalysis(kiekerQueue, traceFolders);
+			} catch (AnalysisConfigurationException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
