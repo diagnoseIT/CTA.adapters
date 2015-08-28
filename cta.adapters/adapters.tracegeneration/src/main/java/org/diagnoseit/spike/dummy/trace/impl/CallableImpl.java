@@ -3,6 +3,7 @@ package org.diagnoseit.spike.dummy.trace.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.diagnoseit.spike.dummy.trace.generation.MonitoringRecord;
@@ -10,6 +11,7 @@ import org.diagnoseit.spike.dummy.trace.generation.MonitoringRecord;
 import rocks.cta.api.core.AdditionalInformation;
 import rocks.cta.api.core.Callable;
 import rocks.cta.api.core.SubTrace;
+import rocks.cta.api.utils.CallableIterator;
 
 public class CallableImpl implements Callable {
 
@@ -179,5 +181,10 @@ public class CallableImpl implements Callable {
 	public int getChildCount() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	@Override
+	public Iterator<Callable> iterator() {
+		return new CallableIterator(this);
 	}
 }

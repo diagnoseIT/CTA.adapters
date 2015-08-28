@@ -5,13 +5,16 @@ import java.util.Properties;
 import rocks.cta.api.core.Trace;
 
 public interface TraceSource {
-	public void initialize(Properties properties, TraceSink traceSink);
 
-	public boolean isManualSource();
+	static final String RESPONSETIME_THRESHOLD = "diagnoseit.spike.rtthreshold";
+	static final long RESPONSETIME_THRESHOLD_DEFAULT = 1000;
+	void initialize(Properties properties, TraceSink traceSink);
 
-	public Trace submitNextTrace();
+	boolean isManualSource();
 
-	public void startTraceGeneration();
+	Trace submitNextTrace();
 
-	public void stopTraceGeneration();
+	void startTraceGeneration();
+
+	void stopTraceGeneration();
 }
