@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit;
 
 import kieker.analysis.exception.AnalysisConfigurationException;
 
-import org.diagnoseit.spike.kieker.trace.test.TraceConversion;
 import org.diagnoseit.spike.shared.TraceSink;
 import org.diagnoseit.spike.shared.TraceSource;
 

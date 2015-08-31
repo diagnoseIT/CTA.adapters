@@ -1,4 +1,4 @@
-package org.diagnoseit.spike.kieker.trace.test;
+package org.diagnoseit.spike.kieker.trace.source;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
