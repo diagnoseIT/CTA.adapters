@@ -69,6 +69,11 @@ public class CallableImpl implements Callable {
 		parseMessageData(abstractMessage);
 
 		this.parent.getCallees().add(this);
+		((CallableImpl) this.parent).updateExecutionTime(responseTime);
+	}
+
+	private void updateExecutionTime(long childResponseTime) {
+		this.executionTime -= childResponseTime;
 	}
 
 	public CallableImpl(SubTraceImpl subtrace, AbstractMessage abstractMessage) {
@@ -223,7 +228,7 @@ public class CallableImpl implements Callable {
 		// TODO Auto-generated method stub
 		return -1;
 	}
-	
+
 	@Override
 	public Iterator<Callable> iterator() {
 		return new CallableIterator(this);

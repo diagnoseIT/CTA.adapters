@@ -48,8 +48,7 @@ public class TraceImpl implements Trace {
 				// if the location is the same as previous, add callable
 				newCallable = new CallableImpl(lastCallable, abstractMessage);
 				if (lastLocation.equals(new LocationImpl(abstractMessage))) {
-					// add callable to last callable, so we go deeper
-					lastCallable.getCallees().add(newCallable);
+					// callable is already added to parent
 				} else { // else add subtrace
 					SubTrace newSubTrace = new SubTraceImpl(lastSubTrace, newCallable, abstractMessage);
 					lastSubTrace.getSubTraces().add(newSubTrace);
