@@ -49,10 +49,9 @@ public class CallableImpl implements Callable {
 		this.entryTime = abstractMessage.getReceivingExecution().getTin();
 		this.exitTime = abstractMessage.getReceivingExecution().getTout();
 		this.responseTime = this.exitTime - this.entryTime;
-		// TODO fix
 		this.executionTime = this.responseTime;
 		// TODO fix
-		this.cpuTime = this.responseTime;
+		this.cpuTime = executionTime;
 
 		this.position = abstractMessage.getReceivingExecution().getEoi();
 		this.depth = abstractMessage.getReceivingExecution().getEss();
@@ -74,6 +73,7 @@ public class CallableImpl implements Callable {
 
 	private void updateExecutionTime(long childResponseTime) {
 		this.executionTime -= childResponseTime;
+		this.cpuTime = this.executionTime;
 	}
 
 	public CallableImpl(SubTraceImpl subtrace, AbstractMessage abstractMessage) {
@@ -232,5 +232,9 @@ public class CallableImpl implements Callable {
 	@Override
 	public Iterator<Callable> iterator() {
 		return new CallableIterator(this);
+	}
+
+	public void setContainingTrace(SubTrace newSubTrace) {
+		this.containingSubTrace = newSubTrace;
 	}
 }

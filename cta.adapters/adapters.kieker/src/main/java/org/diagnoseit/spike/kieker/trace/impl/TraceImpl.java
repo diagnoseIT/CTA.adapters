@@ -55,6 +55,7 @@ public class TraceImpl implements Trace {
 					((CallableImpl) lastCallable).setTargetTrace(newSubTrace);
 					lastLocation = newSubTrace.getLocation();
 					lastSubTrace = newSubTrace;
+					((CallableImpl) newCallable).setContainingTrace(newSubTrace);
 				}
 				lastCallable = newCallable;
 			} else {

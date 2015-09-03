@@ -80,7 +80,9 @@ public final class CTAFilter extends AbstractFilterPlugin {
 	public final void inputEvent(final Object object) {
 		if (this.active) {
 			if (object instanceof MessageTrace) {
-				if(((MessageTrace) object).getSequenceAsVector().size() < 5) return;
+// TODO remove the following line
+// if (((MessageTrace) object).getSequenceAsVector().size() < 5)
+//	return;
 				Trace trace = new TraceImpl((MessageTrace) object);
 				try {
 					traceQueue.put(trace);
