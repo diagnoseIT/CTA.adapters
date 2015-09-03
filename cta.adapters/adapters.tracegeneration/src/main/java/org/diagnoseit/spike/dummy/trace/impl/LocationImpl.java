@@ -100,6 +100,12 @@ public class LocationImpl implements Location {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String getNodeType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	

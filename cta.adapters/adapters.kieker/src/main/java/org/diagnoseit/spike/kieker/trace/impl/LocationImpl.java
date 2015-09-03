@@ -61,4 +61,10 @@ public class LocationImpl implements Location {
 				&& application.equals(((Location) obj).getApplication())
 				&& businessTransaction.equals(((Location) obj).getBusinessTransaction());
 	}
+
+	@Override
+	public String getNodeType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

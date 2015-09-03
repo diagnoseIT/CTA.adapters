@@ -187,4 +187,10 @@ public class CallableImpl implements Callable {
 	public Iterator<Callable> iterator() {
 		return new CallableIterator(this);
 	}
+
+	@Override
+	public long getExclusiveCPUTime() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

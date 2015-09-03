@@ -237,4 +237,13 @@ public class CallableImpl implements Callable {
 	public void setContainingTrace(SubTrace newSubTrace) {
 		this.containingSubTrace = newSubTrace;
 	}
+
+	@Override
+	public long getExclusiveCPUTime() {
+		long exclCPUTime = getCPUTime();
+		for(Callable child: getCallees()){
+			exclCPUTime -= child.getCPUTime();
+		}
+		return exclCPUTime;
+	}
 }
