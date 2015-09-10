@@ -51,8 +51,8 @@ subprojects {
 	}
 
 	dependencies {
-		compile group: 'rocks.cta', name: 'cta.api', version: '1.0.0-SNAPSHOT', changing: true
-		compile group: 'rocks.cta', name: 'cta.default.impl', version: '1.0.0-SNAPSHOT', changing: true
+		compile group: 'rocks.cta', name: 'cta.api', version: '0.1.0-SNAPSHOT', changing: true
+		compile group: 'rocks.cta', name: 'cta.default.impl', version: '0.1.0-SNAPSHOT', changing: true
 		testCompile group: 'junit', name: 'junit', version: '4.+'
 	}
 }

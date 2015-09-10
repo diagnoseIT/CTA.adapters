@@ -1,1 +1,1 @@
-include "shared", "diagnoseit", "adapters.inspectit", "adapters.tracegeneration", "adapters.kieker","adapters.introscope", "trace.services"
+include "shared", "diagnoseit", "trace.services", "adapters.inspectit", "adapters.kieker", "adapters.introscope"
