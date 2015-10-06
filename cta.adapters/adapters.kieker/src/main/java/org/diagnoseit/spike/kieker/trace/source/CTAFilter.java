@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ***************************************************************************/
-package org.diagnoseit.spike.kieker.trace.impl;
+package org.diagnoseit.spike.kieker.trace.source;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -24,6 +24,9 @@ import kieker.analysis.plugin.annotation.Plugin;
 import kieker.analysis.plugin.filter.AbstractFilterPlugin;
 import kieker.common.configuration.Configuration;
 import kieker.tools.traceAnalysis.systemModel.MessageTrace;
+
+import org.diagnoseit.spike.kieker.trace.impl.TraceImpl;
+
 import rocks.cta.api.core.Trace;
 
 /**
@@ -80,18 +83,17 @@ public final class CTAFilter extends AbstractFilterPlugin {
 	public final void inputEvent(final Object object) {
 		if (this.active) {
 			if (object instanceof MessageTrace) {
-// TODO remove the following line
-// if (((MessageTrace) object).getSequenceAsVector().size() < 5)
-//	return;
-				Trace trace = new TraceImpl((MessageTrace) object);
+				if(((MessageTrace) object).getSequenceAsVector().size() < 5) return;
+				TraceImpl trace = new TraceImpl((MessageTrace) object);
 				try {
 					traceQueue.put(trace);
+					
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				System.out.println("Added:\n" + trace);
 			}
 		}
-		// System.out.println("Added: " + object);
 		super.deliver(OUTPUT_PORT_NAME_RELAYED_EVENTS, object);
 	}
 

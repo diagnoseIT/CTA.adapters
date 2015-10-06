@@ -3,30 +3,40 @@
  */
 package org.diagnoseit.spike.kieker.trace.impl;
 
-import kieker.tools.traceAnalysis.systemModel.AbstractMessage;
-import rocks.cta.api.core.Location;
+import java.io.Serializable;
 
+import kieker.tools.traceAnalysis.systemModel.Execution;
+import rocks.cta.api.core.Location;
+import rocks.cta.api.core.Trace;
+import rocks.cta.api.utils.StringUtils;
 
 /**
+ * Implementation of Location interface.
+ * 
  * @author Okanovic
  *
  */
-public class LocationImpl implements Location {
-	String host;
-	String runtimeEnvironment;
-	String application;
-	String businessTransaction;
+public class LocationImpl implements Location, Serializable {
+	private static final long serialVersionUID = 8959194364402329417L;
+	private String host = Trace.UNKOWN;
+	private String runTimeEnvironment = Trace.UNKOWN;
+	private String application = Trace.UNKOWN;
+	private String businessTransaction = Trace.UNKOWN;
+	private String nodeType = Trace.UNKOWN;
 
-	public LocationImpl(String host, String runtimeEnvironment, String application, String businessTransaction) {
-		super();
-		this.host = host;
-		this.runtimeEnvironment = runtimeEnvironment;
-		this.application = application;
-		this.businessTransaction = businessTransaction;
+	public LocationImpl() {
 	}
 
-	public LocationImpl(AbstractMessage message) {
-		this(message.getReceivingExecution().getAllocationComponent().getExecutionContainer().getName(), UNKOWN, UNKOWN, UNKOWN);
+	public LocationImpl(String host, String runTimeEnvironment, String application, String businessTransaction, String nodeType) {
+		this.host = host;
+		this.runTimeEnvironment = runTimeEnvironment;
+		this.application = application;
+		this.businessTransaction = businessTransaction;
+		this.nodeType = nodeType;
+	}
+
+	public LocationImpl(Execution receivingExecution) {
+		this(receivingExecution.getAllocationComponent().getExecutionContainer().getName(), Trace.UNKOWN, Trace.UNKOWN, Trace.UNKOWN, Trace.UNKOWN);
 	}
 
 	@Override
@@ -36,7 +46,7 @@ public class LocationImpl implements Location {
 
 	@Override
 	public String getRuntimeEnvironment() {
-		return runtimeEnvironment;
+		return getRunTimeEnvironment();
 	}
 
 	@Override
@@ -50,21 +60,45 @@ public class LocationImpl implements Location {
 	}
 
 	@Override
+	public String getNodeType() {
+		return nodeType;
+	}
+
+	@Override
 	public String toString() {
-		return host + ":" + runtimeEnvironment + ":" + application + ":" + businessTransaction;
+		return StringUtils.getStringRepresentation(this);
+	}
+
+	public void setHost(String host) {
+		this.host = host;
+	}
+
+	public String getRunTimeEnvironment() {
+		return runTimeEnvironment;
+	}
+
+	public void setRunTimeEnvironment(String runTimeEnvironment) {
+		this.runTimeEnvironment = runTimeEnvironment;
+	}
+
+	public void setApplication(String application) {
+		this.application = application;
+	}
+
+	public void setBusinessTransaction(String businessTransaction) {
+		this.businessTransaction = businessTransaction;
+	}
+
+	public void setNodeType(String nodeType) {
+		this.nodeType = nodeType;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		return host.equals(((Location) obj).getHost())
-				&& runtimeEnvironment.equals(((Location) obj).getRuntimeEnvironment())
-				&& application.equals(((Location) obj).getApplication())
-				&& businessTransaction.equals(((Location) obj).getBusinessTransaction());
-	}
-
-	@Override
-	public String getNodeType() {
-		// TODO Auto-generated method stub
-		return null;
+		if (!(obj instanceof Location))
+			return false;
+		LocationImpl otherLocation = (LocationImpl) obj;
+		return this.host.equals(otherLocation.host) && this.runTimeEnvironment.equals(otherLocation.runTimeEnvironment) && this.application.equals(otherLocation.application)
+				&& this.businessTransaction.equals(otherLocation.businessTransaction) && this.nodeType.equals(otherLocation.nodeType);
 	}
 }

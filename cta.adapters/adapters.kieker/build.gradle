@@ -3,5 +3,5 @@ dependencies {
 	compile project(':shared') 
 	
 	// Kieker dependency
-	compile 'net.kieker-monitoring:kieker:1.12-SNAPSHOT'
+	compile 'net.kieker-monitoring:kieker:1.12'
 }

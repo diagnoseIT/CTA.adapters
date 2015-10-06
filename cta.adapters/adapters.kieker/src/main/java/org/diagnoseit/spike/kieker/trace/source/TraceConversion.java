@@ -11,9 +11,6 @@ import kieker.tools.traceAnalysis.filter.executionRecordTransformation.Execution
 import kieker.tools.traceAnalysis.filter.sessionReconstruction.SessionReconstructionFilter;
 import kieker.tools.traceAnalysis.filter.traceReconstruction.TraceReconstructionFilter;
 import kieker.tools.traceAnalysis.systemModel.repository.SystemModelRepository;
-
-import org.diagnoseit.spike.kieker.trace.impl.CTAFilter;
-
 import rocks.cta.api.core.Trace;
 
 /**
@@ -24,7 +21,7 @@ import rocks.cta.api.core.Trace;
  *
  */
 public class TraceConversion {
-	// list of folders containing traces
+	// list of folders containing traces - for testing
 	private static final String[] trace_folders = {
 			"D:/diagnoseIT/KiekerLogs/kieker-20150730-135303927-UTC-edge2.rssreader.rssperf.emulab.net-KIEKER",
 			"D:/diagnoseIT/KiekerLogs/kieker-20150730-135300977-UTC-lb.rssreader.rssperf.emulab.net-KIEKER",
@@ -39,6 +36,7 @@ public class TraceConversion {
 			"D:/diagnoseIT/KiekerLogs/kieker-20150730-135327483-UTC-eureka.rssreader.rssperf.emulab.net-KIEKER",
 			"D:/diagnoseIT/KiekerLogs/kieker-20150730-135805914-UTC-client.rssreader.rssperf.emulab.net-KIEKER" };
 
+	// for testing
 	public static void main(final String[] args) throws IllegalStateException, AnalysisConfigurationException {
 		LinkedBlockingQueue<Trace> traceList = new LinkedBlockingQueue<Trace>();
 		runAnalysis(traceList, trace_folders);
