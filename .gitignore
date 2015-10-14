@@ -6,3 +6,5 @@
 **/.classpath
 **/.project
 diagnoseit.spike/diagnoseit/mySpike.config
+**/.idea/**
+*.iml

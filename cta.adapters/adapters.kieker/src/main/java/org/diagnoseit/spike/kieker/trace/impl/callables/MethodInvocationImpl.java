@@ -3,11 +3,8 @@
  */
 package org.diagnoseit.spike.kieker.trace.impl.callables;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import kieker.tools.traceAnalysis.systemModel.Execution;
 import rocks.cta.api.core.AdditionalInformation;
@@ -64,77 +61,61 @@ public class MethodInvocationImpl extends AbstractNestingCallableImpl implements
 	}
 
 	@Override
-	public long getCPUTime() {
-		return cpuTime;
+	public Optional<Long> getCPUTime() {
+		return Optional.ofNullable(cpuTime);
 	}
 
 	@Override
-	public String getClassName() {
-		return className;
+	public Optional<String> getClassName() {
+		return Optional.ofNullable(className);
 	}
 
 	@Override
-	public long getExclusiveCPUTime() {
+	public Optional<Long> getExclusiveCPUTime() {
 		if (exclusiveCPUTime < 0) {
 			exclusiveCPUTime = cpuTime;
 
 			for (MethodInvocation child : getCallees(MethodInvocation.class)) {
-				exclusiveCPUTime -= child.getCPUTime();
+				exclusiveCPUTime -= child.getCPUTime().orElse((long) 0);
 			}
 		}
 
-		return exclusiveCPUTime;
+		return Optional.ofNullable(exclusiveCPUTime);
 	}
 
 	@Override
-	public String getMethodName() {
-		return methodName;
+	public Optional<String> getMethodName() {
+		return Optional.ofNullable(methodName);
 	}
 
 	@Override
-	public String getPackageName() {
-		return packageName;
+	public Optional<String> getPackageName() {
+		return Optional.ofNullable(packageName);
 	}
 
 	@Override
-	public List<String> getParameterTypes() {
-		return parameterTypes;
+	public Optional<List<String>> getParameterTypes() {
+		return Optional.ofNullable(parameterTypes);
 	}
 
 	@Override
-	public Map<Integer, String> getParameterValues() {
-		return parameterValues;
+	public Optional<Map<Integer, String>> getParameterValues() {
+		return Optional.ofNullable(parameterValues);
 	}
 
 	@Override
-	public String getReturnType() {
-		return returnType;
+	public Optional<String> getReturnType() {
+		return Optional.ofNullable(returnType);
 	}
 
 	@Override
 	public String getSignature() {
-		StringBuilder strBuilder = new StringBuilder();
-		boolean first = true;
-		for (String pType : getParameterTypes()) {
-			if (first) {
-				first = false;
-			} else {
-				strBuilder.append(",");
-			}
-			strBuilder.append(pType);
-
-		}
-		return getPackageName() + PACKAGE_DELIMITER + getClassName() + PACKAGE_DELIMITER + getMethodName() + "(" + strBuilder.toString() + ")";
+		return getPackageName() + PACKAGE_DELIMITER + getClassName() + PACKAGE_DELIMITER + getMethodName() + "(" + parameterTypes.stream().collect(Collectors.joining(",")) + ")";
 	}
 
 	@Override
-	public boolean hasParameterValues() {
-		return parameterValues != null;
-	}
-
-	@Override
-	public boolean isConstructor() {
-		return methodName.equalsIgnoreCase(CONSTRUCTOR_PATTERN);
+	public Optional<Boolean> isConstructor() {
+		return methodName != null ? Optional.of(methodName.equalsIgnoreCase(CONSTRUCTOR_PATTERN)) : Optional.empty();
 	}
 
 	@Override

@@ -4,6 +4,7 @@
 package org.diagnoseit.spike.kieker.trace.impl.callables;
 
 import java.util.List;
+import java.util.Optional;
 
 import rocks.cta.api.core.AdditionalInformation;
 import rocks.cta.api.core.Location;
@@ -36,21 +37,16 @@ public class RemoteInvocationImpl extends AbstractTimedCallableImpl implements R
 	}
 
 	@Override
-	public Location getTargetLocation() {
+	public Optional<Location> getTargetLocation() {
 		if (targetSubTrace != null) {
-			return targetSubTrace.getLocation();
+			return Optional.ofNullable(targetSubTrace.getLocation());
 		}
-		return null;
+		return Optional.empty();
 	}
 
 	@Override
-	public SubTrace getTargetSubTrace() {
-		return targetSubTrace;
-	}
-
-	@Override
-	public boolean hasTargetSubTrace() {
-		return targetSubTrace != null;
+	public Optional<SubTrace> getTargetSubTrace() {
+		return Optional.ofNullable(targetSubTrace);
 	}
 
 	@Override

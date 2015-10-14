@@ -21,7 +21,7 @@ import rocks.cta.api.utils.StringUtils;
  * @author Okanovic
  *
  */
-public class SubTraceImpl implements SubTrace, Serializable {
+public class SubTraceImpl extends AbstractIdentifiableImpl implements SubTrace, Serializable {
 	private static final long serialVersionUID = 8520603674813053640L;
 
 	// TODO check
@@ -105,31 +105,6 @@ public class SubTraceImpl implements SubTrace, Serializable {
 		}
 	}
 
-	@Override
-	public int maxDepth() {
-		if (getRoot() instanceof NestingCallable) {
-			maxDepth = maxDepth((NestingCallable) getRoot());
-		} else {
-			maxDepth = 0;
-		}
-
-		return maxDepth;
-	}
-
-	private int maxDepth(NestingCallable callable) {
-		if (callable.getCallees().isEmpty()) {
-			return 0;
-		} else {
-			int maxDepth = -1;
-			for (NestingCallable child : callable.getCallees(NestingCallable.class)) {
-				int depth = maxDepth(child);
-				if (depth > maxDepth) {
-					maxDepth = depth;
-				}
-			}
-			return maxDepth + 1;
-		}
-	}
 
 	@Override
 	public int size() {

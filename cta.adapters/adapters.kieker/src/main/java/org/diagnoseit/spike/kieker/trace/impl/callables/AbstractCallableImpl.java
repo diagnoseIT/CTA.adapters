@@ -4,11 +4,9 @@
 package org.diagnoseit.spike.kieker.trace.impl.callables;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
+import org.diagnoseit.spike.kieker.trace.impl.AbstractIdentifiableImpl;
 import org.diagnoseit.spike.kieker.trace.impl.SubTraceImpl;
 import org.diagnoseit.spike.kieker.trace.impl.TraceImpl;
 
@@ -21,7 +19,7 @@ import rocks.cta.api.core.callables.NestingCallable;
  * @author Okanovic
  *
  */
-public abstract class AbstractCallableImpl implements Callable, Serializable {
+public abstract class AbstractCallableImpl extends AbstractIdentifiableImpl implements Callable, Serializable {
 	private static final long serialVersionUID = -3497901525807859440L;
 
 	protected AbstractNestingCallableImpl parent;
@@ -49,23 +47,27 @@ public abstract class AbstractCallableImpl implements Callable, Serializable {
 	}
 
 	@Override
-	public Collection<AdditionalInformation> getAdditionalInformation() {
+	public Optional<Collection<AdditionalInformation>> getAdditionalInformation() {
 		if (additionInfos == null) {
-			return Collections.emptyList();
+			return Optional.empty();
 		}
-		return Collections.unmodifiableList(additionInfos);
+		return Optional.ofNullable(Collections.unmodifiableList(additionInfos));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends AdditionalInformation> Collection<T> getAdditionalInformation(Class<T> type) {
+	public <T extends AdditionalInformation> Optional<Collection<T>> getAdditionalInformation(Class<T> type) {
+		if (additionInfos == null) {
+			return Optional.empty();
+		}
+
 		List<T> result = new ArrayList<T>();
 		for (AdditionalInformation aInfo : additionInfos) {
 			if (type.isAssignableFrom(aInfo.getClass())) {
 				result.add((T) aInfo);
 			}
 		}
-		return Collections.unmodifiableList(result);
+		return Optional.ofNullable(Collections.unmodifiableList(result));
 	}
 
 	@Override
@@ -74,9 +76,9 @@ public abstract class AbstractCallableImpl implements Callable, Serializable {
 	}
 
 	@Override
-	public List<String> getLabels() {
+	public Optional<List<String>> getLabels() {
 		if (labelIds == null) {
-			return Collections.emptyList();
+			return Optional.empty();
 		}
 		List<String> labels = new ArrayList<String>();
 		TraceImpl trace = ((TraceImpl) getContainingSubTrace().getContainingTrace());
@@ -84,7 +86,7 @@ public abstract class AbstractCallableImpl implements Callable, Serializable {
 			// TODO fix this
 			// labels.add(trace.getStringConstant(id));
 		}
-		return Collections.unmodifiableList(labels);
+		return Optional.ofNullable(Collections.unmodifiableList(labels));
 	}
 
 	@Override
@@ -96,10 +98,4 @@ public abstract class AbstractCallableImpl implements Callable, Serializable {
 	public long getTimestamp() {
 		return entryTime;
 	}
-
-	@Override
-	public boolean hasLabel(String arg0) {
-		return getLabels().contains(arg0);
-	}
-
 }
