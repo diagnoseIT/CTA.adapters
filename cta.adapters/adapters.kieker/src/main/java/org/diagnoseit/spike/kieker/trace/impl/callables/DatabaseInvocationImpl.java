@@ -5,6 +5,7 @@ package org.diagnoseit.spike.kieker.trace.impl.callables;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import rocks.cta.api.core.AdditionalInformation;
 import rocks.cta.api.core.SubTrace;
@@ -30,51 +31,51 @@ public class DatabaseInvocationImpl extends AbstractNestingCallableImpl implemen
 	private static final long serialVersionUID = -5261233572253671375L;
 
 	@Override
-	public long getCPUTime() {
+	public Optional<Long> getCPUTime() {
 		// TODO Auto-generated method stub
-		return 0;
+		return Optional.empty();
 	}
 
 	@Override
-	public String getClassName() {
+	public Optional<String> getClassName() {
 		// TODO Auto-generated method stub
-		return null;
+		return Optional.empty();
 	}
 
 	@Override
-	public long getExclusiveCPUTime() {
+	public Optional<Long> getExclusiveCPUTime() {
 		// TODO Auto-generated method stub
-		return 0;
+		return Optional.empty();
 	}
 
 	@Override
-	public String getMethodName() {
+	public Optional<String> getMethodName() {
 		// TODO Auto-generated method stub
-		return null;
+		return Optional.empty();
 	}
 
 	@Override
-	public String getPackageName() {
+	public Optional<String> getPackageName() {
 		// TODO Auto-generated method stub
-		return null;
+		return Optional.empty();
 	}
 
 	@Override
-	public List<String> getParameterTypes() {
+	public Optional<List<String>> getParameterTypes() {
 		// TODO Auto-generated method stub
-		return null;
+		return Optional.empty();
 	}
 
 	@Override
-	public Map<Integer, String> getParameterValues() {
+	public Optional<Map<Integer, String>> getParameterValues() {
 		// TODO Auto-generated method stub
-		return null;
+		return Optional.empty();
 	}
 
 	@Override
-	public String getReturnType() {
+	public Optional<String> getReturnType() {
 		// TODO Auto-generated method stub
-		return null;
+		return Optional.empty();
 	}
 
 	@Override
@@ -84,15 +85,9 @@ public class DatabaseInvocationImpl extends AbstractNestingCallableImpl implemen
 	}
 
 	@Override
-	public boolean hasParameterValues() {
+	public Optional<Boolean> isConstructor() {
 		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isConstructor() {
-		// TODO Auto-generated method stub
-		return false;
+		return Optional.of(false);
 	}
 
 }

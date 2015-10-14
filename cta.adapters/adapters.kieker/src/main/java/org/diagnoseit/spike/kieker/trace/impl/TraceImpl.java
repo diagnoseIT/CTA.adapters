@@ -34,12 +34,11 @@ import rocks.cta.api.utils.SubTraceIterator;
  * @author Okanovic
  *
  */
-public class TraceImpl implements Trace, Serializable {
+public class TraceImpl extends AbstractIdentifiableImpl implements Trace, Serializable {
 	private static final long serialVersionUID = 81641878420161262L;
 
 	public SubTrace rootSubTrace;
 	private long traceId;
-	private boolean cpuTimesSupported;
 	private transient int size = -1;
 
 	public TraceImpl(MessageTrace trace) {
@@ -147,15 +146,6 @@ public class TraceImpl implements Trace, Serializable {
 		}
 
 		return size;
-	}
-
-	@Override
-	public boolean hasCPUTimes() {
-		return cpuTimesSupported;
-	}
-
-	public void setCPUTimesSupported(boolean supported) {
-		cpuTimesSupported = supported;
 	}
 
 	@Override

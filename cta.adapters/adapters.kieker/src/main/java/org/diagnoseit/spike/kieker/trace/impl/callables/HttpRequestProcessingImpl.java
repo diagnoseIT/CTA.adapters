@@ -5,9 +5,11 @@ package org.diagnoseit.spike.kieker.trace.impl.callables;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import rocks.cta.api.core.AdditionalInformation;
 import rocks.cta.api.core.SubTrace;
+import rocks.cta.api.core.callables.HTTPMethod;
 import rocks.cta.api.core.callables.HTTPRequestProcessing;
 
 /**
@@ -32,33 +34,33 @@ public class HttpRequestProcessingImpl extends AbstractNestingCallableImpl imple
 	// TODO unfinished
 
 	@Override
-	public Map<String, String> getHTTPAttributes() {
+	public Optional<Map<String, String>> getHTTPAttributes() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<String, String> getHTTPHeaders() {
+	public Optional<Map<String, String>> getHTTPHeaders() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<String, String[]> getHTTPParameters() {
+	public Optional<Map<String, String[]>> getHTTPParameters() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<String, String> getHTTPSessionAttributes() {
+	public Optional<Map<String, String>> getHTTPSessionAttributes() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public HTTPMethod getRequestMethod() {
+	public Optional<HTTPMethod> getRequestMethod() {
 		// TODO Auto-generated method stub
-		return null;
+		return Optional.empty();
 	}
 
 	@Override
