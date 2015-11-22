@@ -69,7 +69,7 @@ public class SubTraceImpl extends AbstractIdentifiableImpl implements SubTrace, 
 	}
 
 	@Override
-	public long getId() {
+	public long getSubTraceId() {
 		return subTraceId;
 	}
 
